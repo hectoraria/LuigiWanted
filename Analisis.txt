@@ -1,0 +1,81 @@
+Idea Principal -> Juego basado en el clasico buscar a Luigi de la Nintendo DS
+El juego consta de 2 pantallas en la primera se muestra el personaje que hay que buscar.
+En la segunda pantalla se muestra una serie de personajes y se debe seleccionar el personaje a buscar en el menor tiempo posible.
+
+
+HUB
+	WantedHUB
+		
+		+ static clsPersonaje personajeABuscar(){}
+
+		+ async Task personajeEncontrado(){}
+
+		+ async Task empezarTemporizador(){}
+
+ENT
+	clsPersonaje
+		-string nombre {get;}
+		-string foto {get;}
+
+		clsPersonaje(nombre,foto){}
+
+	clsUsuario
+		-int id {get;}
+		-string nombre{get;}
+		-int score{get;}
+		
+		clsUsuario(nombre)
+
+
+DAL
+	clsListadosPersonajesDAL
+		-private static List<clsPersonaje> listadoPersonajes
+
+		+static List<clsPersonaje> getListaPersonajesDAL(){}
+
+		+static string obtenerImagenPersonajeDAL(string nombre){}
+
+	clsListadosUsuariosDAL
+
+		-private static List<clsUsuario> listadoUsuarios
+
+		+static List<clsUsuaio> getListaUsuariosDAL(){}
+
+		-static int obtenerUltimoIdUserDAL(){}
+
+		+static clsUsuario addUserDAL(string nombre){}
+BL
+	clsListadosBL
+		
+		+static List<clsPersonaje> getListaPersonajesBL(){}
+
+		+static string obtenerImagenPersonajeBL(string nombre){}
+
+	clsListadosUsuariosBL
+
+		+static List<clsUsuaio> getListaUsuariosBL(){}
+
+		+static clsUsuario addUserBL(string nombre){}
+
+UI
+	VM
+		pantallaRegister 
+			
+			-string nombre;
+
+		pantallaWantedVM : clsPersonaje
+
+			-int tiempoSiguienteRonda
+			-List<clsUsuario> listaPuntuacion
+
+		
+		pantallaBuscarVM
+
+			-List<clsPersona> listadoPersonajes
+			-String personajeCorrecto
+			-int tiempoRestante
+			-bool acertado
+
+			 
+	
+
