@@ -6,11 +6,27 @@ En la segunda pantalla se muestra una serie de personajes y se debe seleccionar 
 HUB
 	WantedHUB
 		
-		+ static clsPersonaje personajeABuscar(){}
+		+ static List<clsUsuario> listaUsuarios(){
 
-		+ async Task personajeEncontrado(){}
+		+ async Task unirse(String nombre){}
 
-		+ async Task empezarTemporizador(){}
+		+ async Task personajeABuscar(){
+			clsPersonaje personaje = clsListadosPersonajeBL.getPersonajeAleatorio()
+			await Clients.All().Sendasync("PersonajeBuscado",personaje)
+		}
+
+		+ async Task personajeEncontrado(){
+			await Clients.All().Sendasync("PersonajeEncontrado")
+
+		}
+
+		+ async Task scoreUpdate(){
+		
+		}
+
+		+ async Task empezarJuego(){
+			await Clients.All().Sendasync("JuegoListo",listaUsuario.length())
+		}
 
 ENT
 	clsPersonaje
@@ -29,9 +45,12 @@ ENT
 
 DAL
 	clsListadosPersonajesDAL
+
 		-private static List<clsPersonaje> listadoPersonajes
 
 		+static List<clsPersonaje> getListaPersonajesDAL(){}
+
+		+static clsPersonaje getPersonajeAleatorioDAL(){}
 
 		+static string obtenerImagenPersonajeDAL(string nombre){}
 
@@ -45,9 +64,11 @@ DAL
 
 		+static clsUsuario addUserDAL(string nombre){}
 BL
-	clsListadosBL
+	clsListadosPersonajesBL
 		
 		+static List<clsPersonaje> getListaPersonajesBL(){}
+
+		+static clsPersonaje getPersonajeAleatorioBL(){}
 
 		+static string obtenerImagenPersonajeBL(string nombre){}
 

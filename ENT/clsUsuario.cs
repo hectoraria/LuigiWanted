@@ -40,8 +40,9 @@ namespace ENT
 
         #region Contructores
 
-        public clsUsuario(string nombre)
+        public clsUsuario(int id,string nombre)
         {
+            this.id=id;
             this.nombre=nombre;
         }
 
