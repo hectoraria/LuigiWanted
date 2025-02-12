@@ -82,7 +82,7 @@ BL
 
 UI
 	VM
-		pantallaRegister 
+		pantallaRegisterVM 
 			
 			-string nombre;
 
