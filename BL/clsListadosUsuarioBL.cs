@@ -18,23 +18,20 @@ namespace BL
         /// <returns>Devuelve una lista de usuarios</returns>
         public static List<clsUsuario> getListaUsuariosDAL()
         {
-            List<clsUsuario> lista = clsListadosUsuarioDAL.getListaUsuariosDAL();
-            return lista;
+            return clsListadosUsuarioDAL.getListaUsuariosDAL(); ;
         }
 
         /// <summary>
         /// Funcion para añadir el usuario registrado
-        /// Pre:
-        /// Post:
+        /// Pre: Se espera el nombre del usuario para crear el suer
+        /// Post: Se espera un un usario que no este vacio o null
         /// </summary>
         /// <param name="nombre"></param>
         /// <returns></returns>
         public static clsUsuario addUserDAL(string nombre)
         {
             
-            clsUsuario nuevoUsuario = clsListadosUsuarioDAL.addUserDAL(nombre);
-            
-            return nuevoUsuario;
+            return clsListadosUsuarioDAL.addUserDAL(nombre); ;
         }
     }
 }

@@ -15,7 +15,7 @@ HUB
 			await Clients.All().Sendasync("PersonajeBuscado",personaje)
 		}
 
-		+ async Task personajeEncontrado(){
+		+ async Task personajeEncontrado(String nombre)
 			await Clients.All().Sendasync("PersonajeEncontrado")
 
 		}
