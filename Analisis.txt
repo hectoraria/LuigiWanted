@@ -10,7 +10,7 @@ HUB
 
 		+ async Task personajeEncontrado(){}
 
-		+ async Task empezarTemporizador(){}
+		+ async Task empezarJuego(){}
 
 ENT
 	clsPersonaje
