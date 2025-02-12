@@ -63,8 +63,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="VM\" />
 	  <Folder Include="Pages\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\BL\BL.csproj" />
+	  <ProjectReference Include="..\ENT\ENT.csproj" />
 	</ItemGroup>
 
 </Project>

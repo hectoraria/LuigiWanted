@@ -9,7 +9,17 @@ namespace DAL
 {
     public class clsListadoPersonajeDAL
     {
-        private static List<clsPersonaje> listadoPersonajes = new List<clsPersonaje>();
+        private static List<clsPersonaje> listadoPersonajes = new List<clsPersonaje>
+        {
+            new clsPersonaje("Huesitos", "huesitos.png"),
+            new clsPersonaje("Luigi", "luigi.png"),
+            new clsPersonaje("Mario", "mario.png"),
+            new clsPersonaje("Shy Guy", "shyguy.png"),
+            new clsPersonaje("Toad", "toad.png"),
+            new clsPersonaje("Waluigi", "waluigi.png"),
+            new clsPersonaje("Wario", "wario.png"),
+            new clsPersonaje("Yoshi", "yoshi.png")
+        };
 
         /// <summary>
         /// Obtiene la lista de personajes.
