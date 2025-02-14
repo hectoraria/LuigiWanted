@@ -1,5 +1,6 @@
-using LuigiWantedSignalR.Client.Pages;
 using LuigiWantedSignalR.Components;
+using LuigiWantedSignalR.Hubs;
+using _Imports = LuigiWantedSignalR.Client._Imports;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,7 +8,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
+builder.Services.AddSignalR();
+
+builder.Services.AddResponseCompression(opts =>
+{
+    opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+        ["application/octet-stream"]);
+});
+
 var app = builder.Build();
+
+app.UseResponseCompression();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -28,6 +39,8 @@ app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(typeof(LuigiWantedSignalR.Client._Imports).Assembly);
+    .AddAdditionalAssemblies(typeof(_Imports).Assembly);
+
+app.MapHub<GameHub>("/gamehub");
 
 app.Run();

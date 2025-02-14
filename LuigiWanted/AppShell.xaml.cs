@@ -1,10 +1,9 @@
-﻿namespace LuigiWanted
+﻿namespace LuigiWanted;
+
+public partial class AppShell : Shell
 {
-    public partial class AppShell : Shell
+    public AppShell()
     {
-        public AppShell()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }
