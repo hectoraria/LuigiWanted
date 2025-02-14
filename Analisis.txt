@@ -85,15 +85,18 @@ UI
 		pantallaRegisterVM 
 			
 			-string nombre;
+			-HubConnection _connection;
+			-DelegateCommand enviar;
 
 		pantallaWantedVM : clsPersonaje
 
+			-clsPersonaje personajeSeleccionado
 			-int tiempoSiguienteRonda
 			-List<clsUsuario> listaPuntuacion
 
 		
 		pantallaBuscarVM
-
+			
 			-List<clsPersona> listadoPersonajes
 			-String personajeCorrecto
 			-int tiempoRestante

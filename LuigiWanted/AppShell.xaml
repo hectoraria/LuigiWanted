@@ -5,11 +5,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:LuigiWanted"
     Shell.FlyoutBehavior="Disabled"
-    Title="LuigiWanted">
+    Title="LuigiWanted"
+    xmlns:views="clr-namespace:LuigiWanted.Pages">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
 
+    <ShellContent Title="Register" Route="Register" ContentTemplate="{DataTemplate views:MainPage}"></ShellContent>
+
+    <ShellContent Title="Wanted" Route="Wanted" ContentTemplate="{DataTemplate views:Wanted}"></ShellContent>
+
+    <ShellContent Title="Buscar" Route="Buscar" ContentTemplate="{DataTemplate views:Buscar}"></ShellContent>
 </Shell>

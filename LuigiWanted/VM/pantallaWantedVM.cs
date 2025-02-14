@@ -12,12 +12,18 @@ namespace LuigiWanted.VM
     {
         #region Atributos
 
+        private clsPersonaje personajeSeleccionado;
         private int tiempoSiguienteRonda;
         private List<clsUsuario> listaPuntuacion;
 
         #endregion
 
         #region Propiedades
+
+        public clsPersonaje PersonajeSeleccionado
+        {
+            get { return personajeSeleccionado; }
+        }
 
         public int TiempoSiguienteRonda
         {
@@ -37,6 +43,7 @@ namespace LuigiWanted.VM
 
         public pantallaWantedVM()
         {
+            //personajeSeleccionado = (Service.FuncionPersonajeSeleccionado)
             listaPuntuacion = new List<clsUsuario>();
         }
 
