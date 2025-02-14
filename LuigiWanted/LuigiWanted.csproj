@@ -64,6 +64,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+<<<<<<< Updated upstream
 	  <ProjectReference Include="..\ENT\ENT.csproj" />
 	</ItemGroup>
 
@@ -74,6 +75,9 @@
 	  <MauiXaml Update="Pages\Wanted.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+=======
+	  <Folder Include="Pages\" />
+>>>>>>> Stashed changes
 	</ItemGroup>
 
 </Project>
