@@ -64,10 +64,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\ENT\ENT.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <MauiXaml Update="Pages\Buscar.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -78,7 +74,6 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\BL\BL.csproj" />
-	  <ProjectReference Include="..\ENT\ENT.csproj" />
 	</ItemGroup>
 
 </Project>

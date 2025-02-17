@@ -46,7 +46,7 @@ namespace LuigiWanted.VM
 
         public pantallaRegisterVM()
         {
-            _connection = new HubConnectionBuilder().WithUrl("").Build();
+            //_connection = new HubConnectionBuilder().WithUrl("").Build();
 
             enviar = new DelegateCommand(ExecuteEnviar, CanExecuteEnviar);
         }
@@ -58,7 +58,7 @@ namespace LuigiWanted.VM
         {
             bool canExecute = false;
 
-            if (nombre != null )
+            if (nombre != null && nombre!="" )
             {
                 canExecute = true;
             }

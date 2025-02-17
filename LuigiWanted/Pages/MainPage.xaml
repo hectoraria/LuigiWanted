@@ -1,7 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="LuigiWanted.Pages.MainPage">
+             x:Class="LuigiWanted.Pages.MainPage"
+             xmlns:vm="clr-namespace:LuigiWanted.VM">
+
+    <ContentPage.BindingContext>
+        <vm:pantallaRegisterVM></vm:pantallaRegisterVM>
+    </ContentPage.BindingContext>
 
     <ScrollView>
         <VerticalStackLayout>
@@ -10,7 +15,14 @@
                 VerticalOptions="Center" 
                 HorizontalOptions="Center"
                 FontSize="28"/>
-            <Entry Placeholder="Nombre"></Entry>
+            <Entry Placeholder="Nombre"
+                   Text="{Binding Nombre }"></Entry>
+
+            <Button 
+                Text="Entrar Sala"
+                Command="{Binding Enviar}"
+                BackgroundColor="Purple"
+                TextColor="White" />
         </VerticalStackLayout>
     </ScrollView>
 
