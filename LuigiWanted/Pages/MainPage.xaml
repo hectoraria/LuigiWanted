@@ -5,7 +5,12 @@
 
     <ScrollView>
         <VerticalStackLayout>
-
+            <Label 
+                Text="Nombre:"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center"
+                FontSize="28"/>
+            <Entry Placeholder="Nombre"></Entry>
         </VerticalStackLayout>
     </ScrollView>
 
