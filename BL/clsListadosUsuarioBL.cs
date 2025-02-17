@@ -1,16 +1,10 @@
-﻿using ENT;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DAL;
+﻿using DAL;
+using ENT;
 
-namespace BL
+namespace BL;
+
+public class clsListadosUsuarioBL
 {
-    public class clsListadosUsuarioBL
-    {
-
         /// <summary>
         /// Metodo para obtener la lista lista de los usuario
         /// Post: Se espera una lista de usuario que no este vacia o null
@@ -34,5 +28,4 @@ namespace BL
             //Llama al método de la capa DAL para añadir el usuario a la lista 
             return clsListadosUsuarioDAL.addUserDAL(nombre); ;
         }
-    }
 }
