@@ -13,6 +13,7 @@ namespace LuigiWanted.VM
     {
         #region Atributos
 
+        private int puntuacionUser;
         private clsPersonaje personajeSeleccionado;
         private int tiempoSiguienteRonda;
         private List<clsUsuario> listaPuntuacion;

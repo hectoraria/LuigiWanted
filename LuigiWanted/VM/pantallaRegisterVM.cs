@@ -69,6 +69,12 @@ namespace LuigiWanted.VM
         public void ExecuteEnviar()
         {
             
+            //mensajeUser = new MensajeUsuario(grupo, usuario, mensaje);
+            //await _connection.InvokeCoreAsync("SendMessage", args: new[] { mensajeUser });
+            //mensaje = String.Empty;
+
+            //NotifyPropertyChanged("Mensaje");
+            
 
         }
 
