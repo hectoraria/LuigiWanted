@@ -23,7 +23,7 @@ public class clsListadosUsuarioBL
         /// </summary>
         /// <param name="nombre">Se pasara el nombre del usuario registrado en la pagina</param>
         /// <returns></returns>
-        public static clsUsuario addUserDAL(string nombre)
+        public static clsUsuario addUserBL(string nombre)
         {
             //Llama al método de la capa DAL para añadir el usuario a la lista 
             return clsListadosUsuarioDAL.addUserDAL(nombre); ;
