@@ -8,7 +8,7 @@ HUB
 		
 		+ static List<clsUsuario> listaUsuarios(){
 
-		+ async Task unirse(String nombre){}
+		+ async Task Unirse(String nombre){}
 		
 
 		+ async Task personajeABuscar(){

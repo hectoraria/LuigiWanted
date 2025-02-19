@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using BL;
 using ConexionBDTMAUI.VM.Utils;
 using Microsoft.AspNetCore.SignalR.Client;
 
@@ -66,14 +67,12 @@ namespace LuigiWanted.VM
             return canExecute;
         }
 
-        public void ExecuteEnviar()
+        public async void ExecuteEnviar()
         {
             
-            //mensajeUser = new MensajeUsuario(grupo, usuario, mensaje);
-            //await _connection.InvokeCoreAsync("SendMessage", args: new[] { mensajeUser });
-            //mensaje = String.Empty;
-
-            //NotifyPropertyChanged("Mensaje");
+            
+            await _connection.InvokeCoreAsync("Unirse", args: new[] { nombre });
+            
             
 
         }

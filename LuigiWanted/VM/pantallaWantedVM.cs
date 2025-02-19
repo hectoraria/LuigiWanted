@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using BL;
 using ENT;
+using Microsoft.AspNetCore.SignalR.Client;
 
 
 namespace LuigiWanted.VM
 {
-    public class pantallaWantedVM
+    public class pantallaWantedVM : INotifyPropertyChanged
     {
         #region Atributos
 
@@ -17,7 +20,7 @@ namespace LuigiWanted.VM
         private clsPersonaje personajeSeleccionado;
         private int tiempoSiguienteRonda;
         private List<clsUsuario> listaPuntuacion;
-
+        private HubConnection _connection;
         #endregion
 
         #region Propiedades
@@ -25,6 +28,11 @@ namespace LuigiWanted.VM
         public clsPersonaje PersonajeSeleccionado
         {
             get { return personajeSeleccionado; }
+            private set
+            {
+                personajeSeleccionado = value;
+                NotifyPropertyChanged(nameof(personajeSeleccionado));
+            }
         }
 
         public int TiempoSiguienteRonda
@@ -36,7 +44,11 @@ namespace LuigiWanted.VM
         public List<clsUsuario> ListaPuntuacion
         {
             get { return listaPuntuacion; }
-            set { listaPuntuacion = value; }
+            set
+            {
+                listaPuntuacion = value;
+                NotifyPropertyChanged(nameof(listaPuntuacion));
+            }
         }
 
         #endregion
@@ -45,12 +57,28 @@ namespace LuigiWanted.VM
 
         public pantallaWantedVM()
         {
-            //personajeSeleccionado = (Service.FuncionPersonajeSeleccionado)
-            listaPuntuacion = new List<clsUsuario>();
+            _connection = new HubConnectionBuilder()
+                .WithUrl("https://tu-servidor.com/hub")
+                .Build();
+
+            _connection.On<clsPersonaje, List<clsUsuario>>("EmpezarPantallaWanted", (personaje, usuarios) =>
+            {
+                personajeSeleccionado = personaje;
+                listaPuntuacion = usuarios;
+            });
+            
+            
         }
 
         #endregion
+        #region Notify
+        public event PropertyChangedEventHandler? PropertyChanged;
 
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
 
 
 
