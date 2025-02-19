@@ -3,13 +3,15 @@
 public class clsUsuario
 {
     #region Contructores
-
     public clsUsuario(int id, string nombre)
     {
         this.Id = id;
         this.Nombre = nombre;
     }
-
+    public clsUsuario(string nombre)
+    {
+        this.Nombre = nombre;
+    }
     #endregion
 
     #region Atributos

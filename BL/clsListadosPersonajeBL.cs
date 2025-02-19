@@ -25,4 +25,16 @@ public class clsListadoPersonajeBL
         // Llama al método de la capa de acceso a datos para obtener la imagen del personaje
         return clsListadoPersonajeDAL.ObtenerImagenPersonajeDAL(nombre);
     }
+
+    /// <summary>
+    ///     Obtiene un personaje aleatorio.
+    /// </summary>
+    /// <returns>Un personaje aleatorio.</returns>
+    public static clsPersonaje ObtenerPersonajeAleatorio()
+    {
+        Random random = new Random();
+        List<clsPersonaje> listadoPersonajes = clsListadoPersonajeDAL.GetListaPersonajesDAL();
+        int index = random.Next(listadoPersonajes.Count);
+        return listadoPersonajes[index];
+    }
 }
