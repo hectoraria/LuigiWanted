@@ -8,7 +8,6 @@ public class GameHub : Hub
 {
     private static List<clsUsuario> listaUsuarios = new List<clsUsuario>();
 
-<<<<<<< Updated upstream
     public static List<clsUsuario> ListaUsuarios()
     {
         return listaUsuarios;
@@ -24,9 +23,10 @@ public class GameHub : Hub
 
     public async Task PersonajeABuscar()
     {
-        clsPersonaje personaje = clsListadosPersonajeBL.GetPersonajeAleatorio();
+        clsPersonaje personaje = clsListadoPersonajeBL.ObtenerPersonajeAleatorio();
         await Clients.All.SendAsync("PersonajeBuscado", personaje);
-=======
+    }
+
     public async Task Registrarse(string nombre)
     {
         clsUsuario usuario = clsListadosUsuarioBL.addUserBL(nombre);
@@ -38,7 +38,6 @@ public class GameHub : Hub
     {
         clsPersonaje personaje = clsListadoPersonajeBL.ObtenerPersonajeAleatorio();
         await Clients.All.SendAsync("EmpezarPantallaWanted", personaje);
->>>>>>> Stashed changes
     }
 
     public async Task PersonajeEncontrado(string nombre)
@@ -46,24 +45,19 @@ public class GameHub : Hub
         await Clients.All.SendAsync("PersonajeEncontrado", nombre);
     }
 
-<<<<<<< Updated upstream
     public async Task ScoreUpdate(int score)
     {
         // Lógica para actualizar el puntaje
-        await Clients.All.SendAsync("ScoreActualizado", score);
-=======
+        Clients.All.SendAsync("ScoreActualizado", score);
+    }
+
     public async Task ScoreUpdate()
     {
         await Clients.All.SendAsync("ScoreActualizado");
->>>>>>> Stashed changes
     }
 
     public async Task EmpezarJuego()
     {
-<<<<<<< Updated upstream
         await Clients.All.SendAsync("JuegoListo", ListaUsuarios().Count);
-=======
-        await Clients.All.SendAsync("JuegoListo", listaUsuarios.Count);
->>>>>>> Stashed changes
     }
 }
