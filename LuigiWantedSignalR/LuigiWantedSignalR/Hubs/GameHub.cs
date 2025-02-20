@@ -8,11 +8,6 @@ public class GameHub : Hub
 {
     private static List<clsUsuario> listaUsuarios = new List<clsUsuario>();
 
-    public static List<clsUsuario> ListaUsuarios()
-    {
-        return listaUsuarios;
-    }
-
     public async Task Unirse(string nombre)
     {
         // Lógica para unirse al juego
@@ -58,6 +53,6 @@ public class GameHub : Hub
 
     public async Task EmpezarJuego()
     {
-        await Clients.All.SendAsync("JuegoListo", ListaUsuarios().Count);
+        await Clients.All.SendAsync("JuegoListo", listaUsuarios.Count);
     }
 }
