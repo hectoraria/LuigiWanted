@@ -58,7 +58,6 @@ namespace LuigiWanted.VM
         #endregion
 
         #region Constructor
-
         public pantallaWantedVM(clsPersonaje personaje)
         {
             this.personajeABuscar = personaje;

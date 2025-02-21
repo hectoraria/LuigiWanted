@@ -8,6 +8,8 @@ public class GameHub : Hub
 {
     private static List<clsUsuario> listadoUsuarios = new List<clsUsuario>();
     private int jugadoresListos = 0;
+    private clsPersonaje personajeABuscar;
+    private List<clsPersonaje> listadoPersonajes;
 
     public async Task Unirse(string nombre)
     {
@@ -26,8 +28,8 @@ public class GameHub : Hub
 
     public async Task EmpezarPantallaWanted()
     {
-        clsPersonaje personaje = clsListadoPersonajeBL.ObtenerPersonajeAleatorio();
-        await Clients.All.SendAsync("EmpezarPantallaWanted", personaje);
+        personajeABuscar = clsListadoPersonajeBL.ObtenerPersonajeAleatorio();
+        await Clients.All.SendAsync("EmpezarPantallaWanted", personajeABuscar);
     }
 
     public async Task PersonajeEncontrado()
