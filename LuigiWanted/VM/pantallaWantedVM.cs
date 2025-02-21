@@ -1,58 +1,142 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using BL;
 using ENT;
+using Microsoft.AspNetCore.SignalR.Client;
 
 
 namespace LuigiWanted.VM
 {
-    public class pantallaWantedVM
+    public class pantallaWantedVM: INotifyPropertyChanged
     {
         #region Atributos
 
         private int puntuacionUser;
-        private clsPersonaje personajeSeleccionado;
-        private int tiempoSiguienteRonda;
-        private List<clsUsuario> listaPuntuacion;
+        private clsPersonaje personajeABuscar;
+        private int duracionTemporizador;
+        private DateTime tiempoInicializacion;
+        private int tiempoRestante;
+        private List<clsUsuario> listadoUsuarios;
+        private HubConnection _connection;
 
         #endregion
 
         #region Propiedades
 
-        public clsPersonaje PersonajeSeleccionado
+        public clsPersonaje PersonajeABuscar
         {
-            get { return personajeSeleccionado; }
+            get { return personajeABuscar; }
         }
 
-        public int TiempoSiguienteRonda
+        public String TiempoRestante
         {
-            get { return tiempoSiguienteRonda; }
-            set { tiempoSiguienteRonda = value; }
+            get
+            {
+                if (tiempoRestante > 0)
+                {
+                    return tiempoRestante.ToString();
+                }
+                else
+                {
+                    return "Esperando a los demas jugadores";
+                }
+                
+            }
         }
 
-        public List<clsUsuario> ListaPuntuacion
+        public List<clsUsuario> ListadoUsuarios
         {
-            get { return listaPuntuacion; }
-            set { listaPuntuacion = value; }
+            get { return listadoUsuarios; }
+            set { listadoUsuarios = value; }
         }
 
         #endregion
 
         #region Constructor
 
-        public pantallaWantedVM()
+        public pantallaWantedVM(clsPersonaje personaje)
         {
-            //personajeSeleccionado = (Service.FuncionPersonajeSeleccionado)
-            listaPuntuacion = new List<clsUsuario>();
+            this.personajeABuscar = personaje;
+            listadoUsuarios = new List<clsUsuario>();
+            tiempoInicializacion = DateTime.Now;
+            duracionTemporizador = 3;
+            tiempoRestante = duracionTemporizador;
+            Inicializar();
+            ComenzarTemporizador();
         }
 
         #endregion
 
+        #region Metodos
+        
+        /// <summary>
+        /// Funcion para empezar el temporizador
+        /// </summary>
+        private async void ComenzarTemporizador()
+        {
+            while (tiempoRestante > 0)
+            {
+                var elapsedTime = (DateTime.Now - tiempoInicializacion);
+                int secondsRemaining = (int)(duracionTemporizador - elapsedTime.TotalMilliseconds) / 1000;
 
+                await Task.Delay(500);
+            }
 
+            await _connection.InvokeAsync("EmpezarJuego");
+        }
 
+        /// <summary>
+        /// Crea la conexion
+        /// </summary>
+        private void Inicializar()
+        {
+            _connection = new HubConnectionBuilder()
+                .WithUrl("http://localhost:5297/chathub")
+                .Build();
+
+            _connection.On<List<clsUsuario>>("ListadoDeUsuarios", RellenarListado);
+
+            StartConnection();
+        }
+
+        /// <summary>
+        /// Empieza la conexión con el Hub
+        /// </summary>
+        private async void StartConnection()
+        {
+            try
+            {
+                await _connection.StartAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al iniciar la conexión: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Rellena el listado de puntuación
+        /// </summary>
+        /// <param name="listadoUsuarios">Listado con todos los usuarios y sus puntuacioes</param>
+        private void RellenarListado(List<clsUsuario> listadoUsuarios)
+        {
+            this.listadoUsuarios = listadoUsuarios;
+        }
+
+        #endregion
+
+        #region Notify
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
     }
 }

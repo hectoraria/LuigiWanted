@@ -2,25 +2,29 @@
 
 public class clsPersonaje
 {
-    #region Constructores
+    #region Propiedades
 
-    public clsPersonaje(string nombre, string foto)
-    {
-        this.Nombre = nombre;
-        this.Foto = foto;
-    }
+    private string nombre;
+    private string foto;
 
     #endregion
 
     #region Atributos
 
+    public string Nombre
+    {
+        get { return nombre; }
+    }
+
     #endregion
 
-    #region Propiedades
+    #region Constructores
 
-    public string Nombre { get; }
-
-    public string Foto { get; }
+    public clsPersonaje(string nombre, string foto)
+    {
+        this.nombre = nombre;
+        this.foto = foto;
+    }
 
     #endregion
 }

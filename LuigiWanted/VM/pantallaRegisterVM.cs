@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using ConexionBDTMAUI.VM.Utils;
+using ENT;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace LuigiWanted.VM
@@ -16,9 +17,8 @@ namespace LuigiWanted.VM
         #region Atributos
 
         private String nombre;
-
+        private bool modificarNombre;
         private HubConnection _connection;
-
         private DelegateCommand enviar;
 
         #endregion
@@ -35,6 +35,11 @@ namespace LuigiWanted.VM
             }
         }
 
+        public bool ModificarNombre
+        {
+            get { return modificarNombre; }
+        }
+
         public DelegateCommand Enviar
         {
             get { return enviar; }
@@ -46,10 +51,41 @@ namespace LuigiWanted.VM
 
         public pantallaRegisterVM()
         {
-            //_connection = new HubConnectionBuilder().WithUrl("").Build();
-
+            this.modificarNombre = true;
             enviar = new DelegateCommand(ExecuteEnviar, CanExecuteEnviar);
+            Inicializar();
         }
+        #endregion
+
+        #region Metodos
+
+        /// <summary>
+        /// Crea la conexion
+        /// </summary>
+        private void Inicializar()
+        {
+            _connection = new HubConnectionBuilder()
+                .WithUrl("http://localhost:5297/chathub")
+                .Build();
+
+            StartConnection();
+        }
+
+        /// <summary>
+        /// Empieza la conexión con el Hub
+        /// </summary>
+        private async void StartConnection()
+        {
+            try
+            {
+                await _connection.StartAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al iniciar la conexión: {ex.Message}");
+            }
+        }
+
         #endregion
 
         #region Events
@@ -66,15 +102,12 @@ namespace LuigiWanted.VM
             return canExecute;
         }
 
-        public void ExecuteEnviar()
+        public async void ExecuteEnviar()
         {
-            
-            //mensajeUser = new MensajeUsuario(grupo, usuario, mensaje);
-            //await _connection.InvokeCoreAsync("SendMessage", args: new[] { mensajeUser });
-            //mensaje = String.Empty;
+            this.modificarNombre = false;
+            await _connection.InvokeCoreAsync("Registrarse", args: new[] { nombre });
 
-            //NotifyPropertyChanged("Mensaje");
-            
+            NotifyPropertyChanged(nameof(ModificarNombre));
 
         }
 
