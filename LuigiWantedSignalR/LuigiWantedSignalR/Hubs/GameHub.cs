@@ -6,26 +6,21 @@ namespace LuigiWantedSignalR.Hubs;
 
 public class GameHub : Hub
 {
-    private static List<clsUsuario> listaUsuarios = new List<clsUsuario>();
+    private static List<clsUsuario> listadoUsuarios = new List<clsUsuario>();
+    private int jugadoresListos = 0;
 
     public async Task Unirse(string nombre)
     {
         // Lógica para unirse al juego
         clsUsuario nuevoUsuario = new clsUsuario(nombre);
-        listaUsuarios.Add(nuevoUsuario);
+        listadoUsuarios.Add(nuevoUsuario);
         await Clients.All.SendAsync("UsuarioUnido", nuevoUsuario);
-    }
-
-    public async Task PersonajeABuscar()
-    {
-        clsPersonaje personaje = clsListadoPersonajeBL.ObtenerPersonajeAleatorio();
-        await Clients.All.SendAsync("PersonajeBuscado", personaje);
     }
 
     public async Task Registrarse(string nombre)
     {
         clsUsuario usuario = clsListadosUsuarioBL.addUserBL(nombre);
-        listaUsuarios.Add(usuario);
+        listadoUsuarios.Add(usuario);
         await Clients.All.SendAsync("UsuarioUnido", nombre);
     }
 
@@ -35,24 +30,34 @@ public class GameHub : Hub
         await Clients.All.SendAsync("EmpezarPantallaWanted", personaje);
     }
 
-    public async Task PersonajeEncontrado(string nombre)
+    public async Task PersonajeEncontrado()
     {
-        await Clients.All.SendAsync("PersonajeEncontrado", nombre);
+        await Clients.All.SendAsync("PersonajeEncontrado");
     }
 
-    public async Task ScoreUpdate(int score)
+    public async Task ObtenerPuntuaciones()
     {
-        // Lógica para actualizar el puntaje
-        Clients.All.SendAsync("ScoreActualizado", score);
+        await Clients.Caller.SendAsync("ListadoDeUsuarios", listadoUsuarios);
     }
 
-    public async Task ScoreUpdate()
+    public async Task ActualizarPuntuacion(clsUsuario usuario)
     {
-        await Clients.All.SendAsync("ScoreActualizado");
+        // Find the user by ID
+        clsUsuario usuarioConPuntuacionAntigua = listadoUsuarios.FirstOrDefault(u => u.Id == usuario.Id);
+
+        if (usuarioConPuntuacionAntigua != null)
+        {
+            usuarioConPuntuacionAntigua.Score = usuario.Score;
+        }
     }
 
     public async Task EmpezarJuego()
     {
-        await Clients.All.SendAsync("JuegoListo", listaUsuarios.Count);
+        jugadoresListos++;
+        if (jugadoresListos >= listadoUsuarios.Count)
+        {
+            jugadoresListos = 0;
+            await Clients.All.SendAsync("JuegoListo", listadoUsuarios.Count);
+        }
     }
 }
