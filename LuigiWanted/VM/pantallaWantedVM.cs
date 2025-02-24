@@ -108,7 +108,7 @@ namespace LuigiWanted.VM
         private void Inicializar()
         {
             _connection = new HubConnectionBuilder()
-                .WithUrl("http://localhost:5297/chathub")
+                .WithUrl("https://localhost:7120/gamehub")
                 .Build();
 
             _connection.On<List<clsUsuario>>("ListadoDeUsuarios", RellenarListado);

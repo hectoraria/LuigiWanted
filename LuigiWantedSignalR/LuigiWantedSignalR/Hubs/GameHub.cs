@@ -23,7 +23,7 @@ public class GameHub : Hub
     {
         clsUsuario usuario = clsListadosUsuarioBL.addUserBL(nombre);
         listadoUsuarios.Add(usuario);
-        if (listadoUsuarios.Count>=2)
+        if (listadoUsuarios.Count>=1)
         {
             if (personajeABuscar == null)
             {

@@ -65,10 +65,10 @@ namespace LuigiWanted.VM
         private void Inicializar()
         {
             _connection = new HubConnectionBuilder()
-                .WithUrl("http://localhost:5297/chathub")
+                .WithUrl("https://localhost:7120/gamehub")
                 .Build();
 
-            _connection.On<clsPersonaje>("EmpezarJuego", CambiarWanted);
+            _connection.On<clsPersonaje>("JuegoListo", CambiarWanted);
 
             StartConnection();
         }
@@ -95,13 +95,22 @@ namespace LuigiWanted.VM
         /// <returns></returns>
         private async void CambiarWanted(clsPersonaje personaje)
         {
-                clsPersonaje personajeSeleccionado=personaje;
-                var queryParams = new Dictionary<string, object>
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                try
                 {
-                    { "personaje", personajeSeleccionado}
-                };
+                    var queryParams = new Dictionary<string, object>
+                    {
+                        { "personaje", personaje }
+                    };
 
-                await Shell.Current.GoToAsync("///Wanted", queryParams);
+                    await Shell.Current.GoToAsync("///Wanted", queryParams);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error al cambiar de pantalla: {ex.Message}");
+                }
+            });
         }
         #endregion
 

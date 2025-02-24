@@ -9,9 +9,9 @@
     Title="LuigiWanted"
     xmlns:views="clr-namespace:LuigiWanted.Pages">
 
-    <ShellContent Title="Wanted" Route="Wanted" ContentTemplate="{DataTemplate views:MainPage}"></ShellContent>
+    <ShellContent Title="Register" Route="Register" ContentTemplate="{DataTemplate views:MainPage}"></ShellContent>
 
-    <!--<ShellContent Title="Register" Route="Register" ContentTemplate="{DataTemplate views:Wanted}"></ShellContent>-->
+    <ShellContent Title="Wanted" Route="Wanted" ContentTemplate="{DataTemplate views:Wanted}"></ShellContent>
 
     
 
