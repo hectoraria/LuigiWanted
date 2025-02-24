@@ -1,5 +1,6 @@
 using LuigiWantedSignalR.Components;
 using LuigiWantedSignalR.Hubs;
+using Microsoft.AspNetCore.ResponseCompression;
 using _Imports = LuigiWantedSignalR.Client._Imports;
 
 var builder = WebApplication.CreateBuilder(args);

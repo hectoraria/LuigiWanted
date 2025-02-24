@@ -68,6 +68,8 @@ namespace LuigiWanted.VM
                 .WithUrl("http://localhost:5297/chathub")
                 .Build();
 
+            _connection.On<clsPersonaje>("EmpezarJuego", CambiarWanted);
+
             StartConnection();
         }
 
@@ -86,6 +88,21 @@ namespace LuigiWanted.VM
             }
         }
 
+        /// <summary>
+        /// Funcion para pasar a la siguiente pagina y mandar el personaje a buscar
+        /// </summary>
+        /// <param name="personaje">Personaje aleatorio de la lista de personajes</param>
+        /// <returns></returns>
+        private async void CambiarWanted(clsPersonaje personaje)
+        {
+                clsPersonaje personajeSeleccionado=personaje;
+                var queryParams = new Dictionary<string, object>
+                {
+                    { "personaje", personajeSeleccionado}
+                };
+
+                await Shell.Current.GoToAsync("///Wanted", queryParams);
+        }
         #endregion
 
         #region Events

@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 namespace LuigiWanted.VM
 {
+
+    [QueryProperty(nameof(PersonajeABuscar), "personaje")]
     public class pantallaWantedVM: INotifyPropertyChanged
     {
         #region Atributos
@@ -31,6 +33,7 @@ namespace LuigiWanted.VM
         public clsPersonaje PersonajeABuscar
         {
             get { return personajeABuscar; }
+            
         }
 
         public String TiempoRestante
@@ -58,6 +61,16 @@ namespace LuigiWanted.VM
         #endregion
 
         #region Constructor
+        public pantallaWantedVM()
+        {  
+            listadoUsuarios = new List<clsUsuario>();
+            tiempoInicializacion = DateTime.Now;
+            duracionTemporizador = 3;
+            tiempoRestante = duracionTemporizador;
+            Inicializar();
+            ComenzarTemporizador();
+        }
+
         public pantallaWantedVM(clsPersonaje personaje)
         {
             this.personajeABuscar = personaje;
@@ -81,7 +94,7 @@ namespace LuigiWanted.VM
             while (tiempoRestante > 0)
             {
                 var elapsedTime = (DateTime.Now - tiempoInicializacion);
-                int secondsRemaining = (int)(duracionTemporizador - elapsedTime.TotalMilliseconds) / 1000;
+                tiempoRestante = (int)(duracionTemporizador - elapsedTime.TotalMilliseconds) / 1000;
 
                 await Task.Delay(500);
             }

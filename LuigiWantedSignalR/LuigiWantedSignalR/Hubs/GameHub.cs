@@ -23,7 +23,14 @@ public class GameHub : Hub
     {
         clsUsuario usuario = clsListadosUsuarioBL.addUserBL(nombre);
         listadoUsuarios.Add(usuario);
-        await Clients.All.SendAsync("UsuarioUnido", nombre);
+        if (listadoUsuarios.Count>=2)
+        {
+            if (personajeABuscar == null)
+            {
+                personajeABuscar = clsListadoPersonajeBL.ObtenerPersonajeAleatorio();
+            }
+            await Clients.All.SendAsync("JuegoListo", personajeABuscar);
+        }
     }
 
     public async Task EmpezarPantallaWanted()

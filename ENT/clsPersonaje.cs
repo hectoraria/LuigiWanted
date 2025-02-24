@@ -16,6 +16,11 @@ public class clsPersonaje
         get { return nombre; }
     }
 
+    public string Foto
+    {
+        get { return foto; }
+    }
+
     #endregion
 
     #region Constructores
