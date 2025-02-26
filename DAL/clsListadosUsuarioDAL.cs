@@ -17,7 +17,6 @@ public class clsListadosUsuarioDAL
         return new List<clsUsuario>(listadoUsuarios);
     }
 
-
     /// <summary>
     ///     Metodo para calcular el id del proximo usuario que se registre
     ///     Post: Se espera un valor mayor a 0

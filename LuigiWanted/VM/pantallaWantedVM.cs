@@ -62,13 +62,14 @@ namespace LuigiWanted.VM
 
         #region Constructor
         public pantallaWantedVM()
-        {  
+        {
             listadoUsuarios = new List<clsUsuario>();
             tiempoInicializacion = DateTime.Now;
             duracionTemporizador = 3;
             tiempoRestante = duracionTemporizador;
             Inicializar();
             ComenzarTemporizador();
+            PedirListado();
         }
 
         public pantallaWantedVM(clsPersonaje personaje)
@@ -76,12 +77,11 @@ namespace LuigiWanted.VM
             this.personajeABuscar = personaje;
             listadoUsuarios = new List<clsUsuario>();
             tiempoInicializacion = DateTime.Now;
-            duracionTemporizador = 3;
+            duracionTemporizador = 10;
             tiempoRestante = duracionTemporizador;
             Inicializar();
             ComenzarTemporizador();
         }
-
         #endregion
 
         #region Metodos
@@ -102,42 +102,54 @@ namespace LuigiWanted.VM
             await _connection.InvokeAsync("EmpezarJuego");
         }
 
-        /// <summary>
-        /// Crea la conexion
-        /// </summary>
-        private void Inicializar()
+        private async void Inicializar() // Cambiado a async void para poder usar await
         {
             _connection = new HubConnectionBuilder()
                 .WithUrl("https://localhost:7120/gamehub")
                 .Build();
 
-            _connection.On<List<clsUsuario>>("ListadoDeUsuarios", RellenarListado);
+            _connection.On<List<clsUsuario>>("ListadoDeUsuarios", listado =>
+            {
+                System.Diagnostics.Debug.WriteLine($"Listado recibido: {listado?.Count} usuarios");
+                RellenarListado(listado);
+            });
 
-            StartConnection();
+            await StartConnection(); // Espera a que la conexión se complete
+            ComenzarTemporizador(); // Ahora inicia el temporizador DESPUÉS de la conexión
         }
 
-        /// <summary>
-        /// Empieza la conexión con el Hub
-        /// </summary>
-        private async void StartConnection()
+        private async Task StartConnection()
         {
             try
             {
                 await _connection.StartAsync();
+                System.Diagnostics.Debug.WriteLine("Conexión exitosa. Estado: " + _connection.State);
+                await PedirListado();
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al iniciar la conexión: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Error de conexión: {ex.Message}");
             }
         }
 
-        /// <summary>
-        /// Rellena el listado de puntuación
-        /// </summary>
-        /// <param name="listadoUsuarios">Listado con todos los usuarios y sus puntuacioes</param>
-        private void RellenarListado(List<clsUsuario> listadoUsuarios)
+        // En el cliente
+        private async Task PedirListado()
         {
-            this.listadoUsuarios = listadoUsuarios;
+            Console.WriteLine("🔄 Solicitando listado...");
+            try
+            {
+                await _connection.InvokeAsync("ObtenerPuntuaciones");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ Error al pedir listado: {ex.Message}");
+            }
+        }
+
+        private void RellenarListado(List<clsUsuario> listado)
+        {
+            System.Diagnostics.Debug.WriteLine("✅ Listado recibido en cliente. Usuarios: " + listado?.Count);
+            ListadoUsuarios = listado ?? new List<clsUsuario>();
         }
 
         #endregion
