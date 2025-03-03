@@ -2,6 +2,17 @@
 
 public class clsUsuario
 {
+    #region Propiedades
+    public int Id { get; }
+    public string Nombre { get; }
+    public int Score { get; set; }
+
+    #endregion
+
+    #region Atributos
+
+    #endregion
+
     #region Contructores
     public clsUsuario(int id, string nombre)
     {
@@ -12,19 +23,5 @@ public class clsUsuario
     {
         this.Nombre = nombre;
     }
-    #endregion
-
-    #region Atributos
-
-    #endregion
-
-    #region Propiedades
-
-    public int Id { get; }
-
-    public string Nombre { get; }
-
-    public int Score { get; set; }
-
     #endregion
 }

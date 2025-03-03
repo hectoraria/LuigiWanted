@@ -46,7 +46,7 @@ public class GameHub : Hub
 
     public async Task ObtenerPuntuaciones()
     {
-        await Clients.Caller.SendAsync("ListadoDeUsuarios", listadoUsuarios);
+        await Clients.All.SendAsync("ListadoDeUsuarios", listadoUsuarios);
     }
 
     public async Task ActualizarPuntuacion(clsUsuario usuario)

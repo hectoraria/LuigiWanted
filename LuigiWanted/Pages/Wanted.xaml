@@ -17,7 +17,7 @@
             FontAttributes="Bold"
             HorizontalOptions="Center" />
         <Label 
-            Text="{Binding TiempoSiguienteRonda}" 
+            Text="{Binding TiempoRestante}" 
             FontSize="30"
             FontAttributes="Bold"
             HorizontalOptions="Center" />
@@ -39,7 +39,7 @@
                                            FontSize="18" 
                                            FontAttributes="Bold"
                                            VerticalOptions="Center"/>
-                                    <Label Text="{Binding Puntuacion}" 
+                                    <Label Text="{Binding Score}" 
                                            FontSize="18" 
                                            TextColor="Blue"
                                            HorizontalOptions="EndAndExpand"
