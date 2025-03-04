@@ -29,7 +29,8 @@ public class GameHub : Hub
             {
                 personajeABuscar = clsListadoPersonajeBL.ObtenerPersonajeAleatorio();
             }
-            await Clients.All.SendAsync("JuegoListo", personajeABuscar);
+            PersonajeConListadoUsuario personajeConListadoUsuario = new PersonajeConListadoUsuario(personajeABuscar, listadoUsuarios);
+            await Clients.All.SendAsync("JuegoListo", personajeConListadoUsuario);
         }
     }
 

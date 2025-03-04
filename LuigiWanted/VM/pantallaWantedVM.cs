@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 namespace LuigiWanted.VM
 {
 
-    [QueryProperty(nameof(PersonajeABuscar), "personaje")]
+    [QueryProperty(nameof(PersonajeConListadoUsuario), "personajeConListadoUsuario")]
     public class pantallaWantedVM: INotifyPropertyChanged
     {
         #region Atributos
@@ -29,7 +29,6 @@ namespace LuigiWanted.VM
         #endregion
 
         #region Propiedades
-
         public clsPersonaje PersonajeABuscar
         {
             get { return personajeABuscar; }
@@ -51,13 +50,21 @@ namespace LuigiWanted.VM
                 
             }
         }
-
         public List<clsUsuario> ListadoUsuarios
         {
             get { return listadoUsuarios; }
             set { listadoUsuarios = value; }
         }
 
+        public PersonajeConListadoUsuario PersonajeConListado
+        {
+            get
+            {
+                personajeABuscar = PersonajeConListado.Personaje;
+                listadoUsuarios = PersonajeConListado.Usuarios;
+                return null;
+            }
+        }
         #endregion
 
         #region Constructor
