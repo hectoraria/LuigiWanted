@@ -117,7 +117,7 @@ namespace LuigiWanted.VM
                 await Task.Delay(1000);
             }
 
-            await _connection.InvokeAsync("EmpezarBusqueda");
+            await _connection.InvokeAsync("EmpezarJuego"); // Ahora se ejecuta solo cuando termina el temporizador
         }
 
 
