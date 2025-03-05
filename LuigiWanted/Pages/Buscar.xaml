@@ -2,7 +2,13 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="LuigiWanted.Pages.Buscar"
-             Title="Buscar">
+             Title="Buscar"
+             xmlns:vm="clr-namespace:LuigiWanted.VM">
+
+    <ContentPage.BindingContext>
+        <vm:pantallaBuscarVM></vm:pantallaBuscarVM>
+    </ContentPage.BindingContext>
+
     <VerticalStackLayout>
         <Label 
             Text="Welcome to .NET MAUI!"

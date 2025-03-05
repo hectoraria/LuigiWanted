@@ -1,6 +1,8 @@
-﻿namespace ENT;
+﻿using ENT;
 
-public class PersonajeConListadoUsuario
+namespace DTO;
+
+public class BuscarDTO
 {
     #region Propiedades
 
@@ -25,7 +27,7 @@ public class PersonajeConListadoUsuario
 
     #region Constructores
 
-    public PersonajeConListadoUsuario(clsPersonaje personaje, List<clsUsuario> usuarios)
+    public BuscarDTO(clsPersonaje personaje, List<clsUsuario> usuarios)
     {
         this.personaje = personaje;
         this.usuarios = usuarios;

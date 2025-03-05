@@ -1,5 +1,6 @@
 ﻿using BL;
 using ENT;
+using DTO;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 namespace LuigiWanted.VM;
 
+[QueryProperty(nameof(ListadoPersonajes), "listadoPersonaje")]
 public class pantallaBuscarVM
 {
     #region Atributos
@@ -71,7 +72,7 @@ public class pantallaBuscarVM
     private void Inicializar()
     {
         _connection = new HubConnectionBuilder()
-            .WithUrl("http://localhost:5297/chathub")
+            .WithUrl("https://localhost:7120/gamehub")
             .Build();
 
         StartConnection();
