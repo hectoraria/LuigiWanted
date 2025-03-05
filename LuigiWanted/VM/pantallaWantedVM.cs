@@ -60,11 +60,18 @@ namespace LuigiWanted.VM
         {
             set
             {
-                PersonajeConListadoUsuario personajeConListadoUsuario = JsonConvert.DeserializeObject<PersonajeConListadoUsuario>(value);
-                personajeABuscar = personajeConListadoUsuario.Personaje;
-                listadoUsuarios = personajeConListadoUsuario.Usuarios;
-                NotifyPropertyChanged(nameof(PersonajeABuscar));
-                NotifyPropertyChanged(nameof(ListadoUsuarios));
+                try
+                {
+                    PersonajeConListadoUsuario personajeConListadoUsuario = JsonConvert.DeserializeObject<PersonajeConListadoUsuario>(value);
+                    personajeABuscar = personajeConListadoUsuario.Personaje;
+                    listadoUsuarios = personajeConListadoUsuario.Usuarios;
+                    NotifyPropertyChanged(nameof(PersonajeABuscar));
+                    NotifyPropertyChanged(nameof(ListadoUsuarios));
+                }
+                catch (JsonSerializationException ex)
+                {
+                    Console.WriteLine($"Error de deserialización: {ex.Message}");
+                }
             }
         }
         #endregion
@@ -74,7 +81,7 @@ namespace LuigiWanted.VM
         {
             listadoUsuarios = new List<clsUsuario>();
             tiempoInicializacion = DateTime.Now;
-            duracionTemporizador = 3;
+            duracionTemporizador = 10;
             tiempoRestante = duracionTemporizador;
             Inicializar();
             ComenzarTemporizador();
@@ -105,14 +112,12 @@ namespace LuigiWanted.VM
                 var elapsedTime = (DateTime.Now - tiempoInicializacion).TotalSeconds;
                 tiempoRestante = (int)(duracionTemporizador - elapsedTime);
 
-                NotifyPropertyChanged(nameof(TiempoRestante)); // Notifica a la UI sobre el cambio
+                NotifyPropertyChanged(nameof(TiempoRestante));
 
-                await Task.Delay(500);
+                await Task.Delay(1000);
             }
 
-            tiempoRestante = 0;
-            NotifyPropertyChanged(nameof(TiempoRestante)); // Notifica que llegó a cero
-            await _connection.InvokeAsync("EmpezarJuego"); // Ahora se ejecuta solo cuando termina el temporizador
+            await _connection.InvokeAsync("EmpezarBusqueda");
         }
 
 

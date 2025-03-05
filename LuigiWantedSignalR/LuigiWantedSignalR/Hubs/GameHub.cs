@@ -10,7 +10,8 @@ public class GameHub : Hub
     private static List<clsUsuario> listadoUsuarios = new List<clsUsuario>();
     private int jugadoresListos = 0;
     private clsPersonaje personajeABuscar;
-    private List<clsPersonaje> listadoPersonajes;
+    private List<clsPersonaje> listadoPersonajes = clsListadoPersonajeBL.GetListaPersonajesBL();
+    private List<clsPersonaje> listadoPersonajesBuscar = new List<clsPersonaje>();
 
     public async Task Unirse(string nombre)
     {
@@ -64,11 +65,28 @@ public class GameHub : Hub
         }
     }
 
-    public async Task EmpezarJuego()
+    public async Task EmpezarBusqueda()
     {
         jugadoresListos++;
         if (jugadoresListos >= listadoUsuarios.Count)
         {
+            clsPersonaje personaje;
+            int index;
+            Random random = new Random();
+            for (int i = 0; i < 5; i++)
+            {
+                for (int j = 0; j < 5; j++)
+                {
+                    do
+                    {
+                        index = random.Next(listadoPersonajes.Count);
+                        personaje = listadoPersonajes[index];
+                    } while (personaje.Equals(personajeABuscar));
+                    listadoPersonajesBuscar.Add(personaje);
+                }
+            }
+            index = random.Next(listadoPersonajes.Count);
+            listadoPersonajes[index] = personajeABuscar;
             jugadoresListos = 0;
             await Clients.All.SendAsync("JuegoListo", listadoUsuarios.Count);
         }
