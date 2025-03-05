@@ -110,8 +110,6 @@ namespace LuigiWanted.VM
                 await Task.Delay(500);
             }
 
-            tiempoRestante = 0;
-            NotifyPropertyChanged(nameof(TiempoRestante)); // Notifica que llegó a cero
             await _connection.InvokeAsync("EmpezarJuego"); // Ahora se ejecuta solo cuando termina el temporizador
         }
 
