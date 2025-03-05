@@ -6,27 +6,36 @@
              xmlns:vm="clr-namespace:LuigiWanted.VM">
 
     <ContentPage.BindingContext>
-        <vm:pantallaWantedVM></vm:pantallaWantedVM>
+        <vm:pantallaWantedVM />
     </ContentPage.BindingContext>
+
     <VerticalStackLayout Padding="20" Spacing="15">
 
-        
+        <!-- Contador -->
         <Label 
             Text="Contador"
             FontSize="24"
             FontAttributes="Bold"
             HorizontalOptions="Center" />
+
         <Label 
             Text="{Binding TiempoRestante}" 
-            FontSize="30"
+            FontSize="36"
             FontAttributes="Bold"
+            TextColor="Red"
             HorizontalOptions="Center" />
 
-        
+        <Image Source="{Binding PersonajeABuscar.Foto}" 
+               WidthRequest="150"
+               HeightRequest="150"
+               Aspect="AspectFit"
+               HorizontalOptions="Center"/>
+
+        <!-- Listado de puntuaciones -->
         <Frame BorderColor="Black" Padding="10" CornerRadius="10">
             <VerticalStackLayout>
                 <Label Text="Listado de Puntuación" 
-                       FontSize="20" 
+                       FontSize="22" 
                        FontAttributes="Bold"
                        HorizontalOptions="Center"/>
 
@@ -34,22 +43,26 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Frame BorderColor="Gray" CornerRadius="10" Padding="10" Margin="5">
-                                <HorizontalStackLayout>
+                                <Grid ColumnDefinitions="2*,1*" Padding="5">
                                     <Label Text="{Binding Nombre}" 
                                            FontSize="18" 
                                            FontAttributes="Bold"
-                                           VerticalOptions="Center"/>
+                                           VerticalOptions="Center"
+                                           Grid.Column="0"/>
                                     <Label Text="{Binding Score}" 
                                            FontSize="18" 
                                            TextColor="Blue"
-                                           HorizontalOptions="EndAndExpand"
-                                           VerticalOptions="Center"/>
-                                </HorizontalStackLayout>
+                                           FontAttributes="Bold"
+                                           HorizontalTextAlignment="End"
+                                           VerticalOptions="Center"
+                                           Grid.Column="1"/>
+                                </Grid>
                             </Frame>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
             </VerticalStackLayout>
         </Frame>
+
     </VerticalStackLayout>
 </ContentPage>

@@ -85,7 +85,7 @@ namespace LuigiWanted.VM
         #endregion
 
         #region Metodos
-        
+
         /// <summary>
         /// Funcion para empezar el temporizador
         /// </summary>
@@ -93,14 +93,19 @@ namespace LuigiWanted.VM
         {
             while (tiempoRestante > 0)
             {
-                var elapsedTime = (DateTime.Now - tiempoInicializacion);
-                tiempoRestante = (int)(duracionTemporizador - elapsedTime.TotalMilliseconds) / 1000;
+                var elapsedTime = (DateTime.Now - tiempoInicializacion).TotalSeconds;
+                tiempoRestante = (int)(duracionTemporizador - elapsedTime);
+
+                NotifyPropertyChanged(nameof(TiempoRestante)); // Notifica a la UI sobre el cambio
 
                 await Task.Delay(500);
             }
 
-            await _connection.InvokeAsync("EmpezarJuego");
+            tiempoRestante = 0;
+            NotifyPropertyChanged(nameof(TiempoRestante)); // Notifica que llegó a cero
+            await _connection.InvokeAsync("EmpezarJuego"); // Ahora se ejecuta solo cuando termina el temporizador
         }
+
 
         private async void Inicializar() // Cambiado a async void para poder usar await
         {
