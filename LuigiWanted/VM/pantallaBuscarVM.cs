@@ -7,13 +7,11 @@ namespace LuigiWanted.VM;
 public class pantallaBuscarVM
 {
     #region Atributos
-
-    private readonly clsUsuario usuario;
     private string personajeSeleccionado;
+    private clsUsuario usuario;
     private readonly string personajeCorrecto;
     private List<clsPersonaje> listadoPersonajes;
     private HubConnection _connection;
-
     #endregion
 
     #region Propiedades
@@ -53,15 +51,10 @@ public class pantallaBuscarVM
     #endregion
 
     #region Constructores
-
-    public pantallaBuscarVM(clsUsuario usuario, List<clsPersonaje> listadoPersonajes, string personajeCorrecto)
+    public pantallaBuscarVM()
     {
-        this.usuario = usuario;
-        this.listadoPersonajes = listadoPersonajes;
-        this.personajeCorrecto = personajeCorrecto;
         Inicializar();
     }
-
     #endregion
 
     #region Metodos

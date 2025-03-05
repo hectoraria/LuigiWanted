@@ -102,7 +102,7 @@ namespace LuigiWanted.VM
                 {
                     var queryParams = new Dictionary<string, object>
                     {
-                        { "personajeConListadoUsuario", personajeConListadoUsuario }
+                        { "personajeConListadoUsuario", personajeConListadoUsuario },
                     };
 
                     await Shell.Current.GoToAsync("///Wanted", queryParams);

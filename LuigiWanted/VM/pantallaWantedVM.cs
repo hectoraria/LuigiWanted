@@ -16,11 +16,12 @@ namespace LuigiWanted.VM
 {
 
     [QueryProperty(nameof(PersonajeConListadoUsuario), "personajeConListadoUsuario")]
-    public class pantallaWantedVM: INotifyPropertyChanged
+    [QueryProperty(nameof(PersonajeConListadoUsuario), "personajeConListadoUsuario")]
+    public class pantallaWantedVM : INotifyPropertyChanged
     {
         #region Atributos
         private string json;
-        private int puntuacionUser;
+        private clsUsuario usuario;
         private clsPersonaje personajeABuscar;
         private int duracionTemporizador;
         private DateTime tiempoInicializacion;
@@ -33,7 +34,7 @@ namespace LuigiWanted.VM
         public clsPersonaje PersonajeABuscar
         {
             get { return personajeABuscar; }
-            
+
         }
 
         public String TiempoRestante
@@ -48,7 +49,7 @@ namespace LuigiWanted.VM
                 {
                     return "Esperando a los demas jugadores";
                 }
-                
+
             }
         }
         public List<clsUsuario> ListadoUsuarios
@@ -74,6 +75,11 @@ namespace LuigiWanted.VM
                     Console.WriteLine($"Error de deserialización: {ex.Message}");
                 }
             }
+        }
+
+        public clsUsuario Usuario
+        {
+            set { usuario = value; }
         }
         #endregion
 
@@ -118,7 +124,7 @@ namespace LuigiWanted.VM
                 await Task.Delay(1000);
             }
 
-            await _connection.InvokeAsync("EmpezarJuego"); // Ahora se ejecuta solo cuando termina el temporizador
+            await _connection.InvokeAsync("EmpezarBusqueda");
         }
 
 
@@ -127,12 +133,6 @@ namespace LuigiWanted.VM
             _connection = new HubConnectionBuilder()
                 .WithUrl("https://localhost:7120/gamehub")
                 .Build();
-
-            _connection.On<List<clsUsuario>>("ListadoDeUsuarios", listado =>
-            {
-                System.Diagnostics.Debug.WriteLine($"Listado recibido: {listado?.Count} usuarios");
-                RellenarListado(listado);
-            });
 
             await StartConnection(); // Espera a que la conexión se complete
             ComenzarTemporizador(); // Ahora inicia el temporizador DESPUÉS de la conexión
@@ -166,12 +166,31 @@ namespace LuigiWanted.VM
             }
         }
 
-        private void RellenarListado(List<clsUsuario> listado)
+        /// <summary>
+        /// Funcion para pasar a la siguiente pagina
+        /// </summary>
+        /// <param name="personaje">Personaje aleatorio de la lista de personajes</param>
+        /// <returns></returns>
+        private void CambiarBuscar(string buscarDTO)
         {
-            System.Diagnostics.Debug.WriteLine("✅ Listado recibido en cliente. Usuarios: " + listado?.Count);
-            ListadoUsuarios = listado ?? new List<clsUsuario>();
-        }
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                try
+                {
+                    var queryParams = new Dictionary<string, object>
+                    {
+                        { "personajeConListadoUsuario", buscarDTO },
+                        { "usuario", usuario}
+                    };
 
+                    await Shell.Current.GoToAsync("///Wanted", queryParams);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error al cambiar de pantalla: {ex.Message}");
+                }
+            });
+        }
         #endregion
 
         #region Notify
