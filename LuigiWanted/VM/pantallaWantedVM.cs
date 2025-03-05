@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using BL;
 using ENT;
 using Microsoft.AspNetCore.SignalR.Client;
+using Newtonsoft.Json;
 
 
 namespace LuigiWanted.VM
@@ -17,7 +18,7 @@ namespace LuigiWanted.VM
     public class pantallaWantedVM: INotifyPropertyChanged
     {
         #region Atributos
-
+        private string json;
         private int puntuacionUser;
         private clsPersonaje personajeABuscar;
         private int duracionTemporizador;
@@ -25,7 +26,6 @@ namespace LuigiWanted.VM
         private int tiempoRestante;
         private List<clsUsuario> listadoUsuarios;
         private HubConnection _connection;
-
         #endregion
 
         #region Propiedades
@@ -56,13 +56,15 @@ namespace LuigiWanted.VM
             set { listadoUsuarios = value; }
         }
 
-        public PersonajeConListadoUsuario PersonajeConListado
+        public string PersonajeConListadoUsuario
         {
-            get
+            set
             {
-                personajeABuscar = PersonajeConListado.Personaje;
-                listadoUsuarios = PersonajeConListado.Usuarios;
-                return null;
+                PersonajeConListadoUsuario personajeConListadoUsuario = JsonConvert.DeserializeObject<PersonajeConListadoUsuario>(value);
+                personajeABuscar = personajeConListadoUsuario.Personaje;
+                listadoUsuarios = personajeConListadoUsuario.Usuarios;
+                NotifyPropertyChanged(nameof(PersonajeABuscar));
+                NotifyPropertyChanged(nameof(ListadoUsuarios));
             }
         }
         #endregion
@@ -106,7 +108,7 @@ namespace LuigiWanted.VM
                 await Task.Delay(500);
             }
 
-            await _connection.InvokeAsync("EmpezarJuego");
+            //await _connection.InvokeAsync("EmpezarJuego");
         }
 
         private async void Inicializar() // Cambiado a async void para poder usar await

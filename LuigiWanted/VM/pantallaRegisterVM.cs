@@ -69,7 +69,7 @@ namespace LuigiWanted.VM
                 .AddNewtonsoftJsonProtocol()
                 .Build();
 
-            _connection.On<PersonajeConListadoUsuario>("JuegoListo", CambiarWanted);
+            _connection.On<string>("JuegoListo", CambiarWanted);
 
             StartConnection();
         }
@@ -94,7 +94,7 @@ namespace LuigiWanted.VM
         /// </summary>
         /// <param name="personaje">Personaje aleatorio de la lista de personajes</param>
         /// <returns></returns>
-        private void CambiarWanted(PersonajeConListadoUsuario personajeConListadoUsuario)
+        private void CambiarWanted(string personajeConListadoUsuario)
         {
             MainThread.BeginInvokeOnMainThread(async () =>
             {

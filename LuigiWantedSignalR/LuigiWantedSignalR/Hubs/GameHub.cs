@@ -1,6 +1,7 @@
 ﻿using BL;
 using ENT;
 using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
 
 namespace LuigiWantedSignalR.Hubs;
 
@@ -30,7 +31,9 @@ public class GameHub : Hub
                 personajeABuscar = clsListadoPersonajeBL.ObtenerPersonajeAleatorio();
             }
             PersonajeConListadoUsuario personajeConListadoUsuario = new PersonajeConListadoUsuario(personajeABuscar, listadoUsuarios);
-            await Clients.All.SendAsync("JuegoListo", personajeConListadoUsuario);
+            string jsonResponse = JsonConvert.SerializeObject(personajeConListadoUsuario);
+
+            await Clients.All.SendAsync("JuegoListo", jsonResponse);
         }
     }
 
