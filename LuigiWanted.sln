@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuigiWantedSignalR", "Luigi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuigiWantedSignalR.Client", "LuigiWantedSignalR\LuigiWantedSignalR.Client\LuigiWantedSignalR.Client.csproj", "{98B35BC7-C711-4F3D-BCAA-42D1A7DBD061}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTO", "DTO\DTO.csproj", "{F71D77F9-F3EA-494E-82A5-FB2A3BCA91F0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,8 +54,15 @@ Global
 		{98B35BC7-C711-4F3D-BCAA-42D1A7DBD061}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98B35BC7-C711-4F3D-BCAA-42D1A7DBD061}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98B35BC7-C711-4F3D-BCAA-42D1A7DBD061}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F71D77F9-F3EA-494E-82A5-FB2A3BCA91F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F71D77F9-F3EA-494E-82A5-FB2A3BCA91F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F71D77F9-F3EA-494E-82A5-FB2A3BCA91F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F71D77F9-F3EA-494E-82A5-FB2A3BCA91F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F13B6180-C0E2-4D95-90E0-1D3E59C926C1}
 	EndGlobalSection
 EndGlobal

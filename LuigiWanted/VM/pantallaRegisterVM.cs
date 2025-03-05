@@ -66,9 +66,10 @@ namespace LuigiWanted.VM
         {
             _connection = new HubConnectionBuilder()
                 .WithUrl("https://localhost:7120/gamehub")
+                .AddNewtonsoftJsonProtocol()
                 .Build();
 
-            _connection.On<clsPersonaje>("JuegoListo", CambiarWanted);
+            _connection.On<string>("JuegoListo", CambiarWanted);
 
             StartConnection();
         }
@@ -93,7 +94,7 @@ namespace LuigiWanted.VM
         /// </summary>
         /// <param name="personaje">Personaje aleatorio de la lista de personajes</param>
         /// <returns></returns>
-        private async void CambiarWanted(clsPersonaje personaje)
+        private void CambiarWanted(string personajeConListadoUsuario)
         {
             MainThread.BeginInvokeOnMainThread(async () =>
             {
@@ -101,7 +102,7 @@ namespace LuigiWanted.VM
                 {
                     var queryParams = new Dictionary<string, object>
                     {
-                        { "personaje", personaje }
+                        { "personajeConListadoUsuario", personajeConListadoUsuario }
                     };
 
                     await Shell.Current.GoToAsync("///Wanted", queryParams);
@@ -134,7 +135,6 @@ namespace LuigiWanted.VM
             await _connection.InvokeCoreAsync("Registrarse", args: new[] { nombre });
 
             NotifyPropertyChanged(nameof(ModificarNombre));
-
         }
 
         #endregion

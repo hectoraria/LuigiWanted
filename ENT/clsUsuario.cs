@@ -1,10 +1,12 @@
-﻿namespace ENT;
+﻿using System.Text.Json.Serialization;
+
+namespace ENT;
 
 public class clsUsuario
 {
     #region Propiedades
-    public int Id { get; }
-    public string Nombre { get; }
+    public int Id { get; set; }
+    public string Nombre { get; set; }
     public int Score { get; set; }
 
     #endregion
@@ -14,6 +16,7 @@ public class clsUsuario
     #endregion
 
     #region Contructores
+    [JsonConstructor]
     public clsUsuario(int id, string nombre)
     {
         this.Id = id;
@@ -22,6 +25,10 @@ public class clsUsuario
     public clsUsuario(string nombre)
     {
         this.Nombre = nombre;
+    }
+
+    public clsUsuario()
+    {
     }
     #endregion
 }
