@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using BL;
+using DTO;
 using ENT;
 using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
@@ -62,7 +63,7 @@ namespace LuigiWanted.VM
             {
                 try
                 {
-                    PersonajeConListadoUsuario personajeConListadoUsuario = JsonConvert.DeserializeObject<PersonajeConListadoUsuario>(value);
+                    WantedDTO personajeConListadoUsuario = JsonConvert.DeserializeObject<WantedDTO>(value);
                     personajeABuscar = personajeConListadoUsuario.Personaje;
                     listadoUsuarios = personajeConListadoUsuario.Usuarios;
                     NotifyPropertyChanged(nameof(PersonajeABuscar));
