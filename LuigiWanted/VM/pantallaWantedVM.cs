@@ -16,7 +16,7 @@ namespace LuigiWanted.VM
 {
 
     [QueryProperty(nameof(PersonajeConListadoUsuario), "personajeConListadoUsuario")]
-    [QueryProperty(nameof(PersonajeConListadoUsuario), "personajeConListadoUsuario")]
+    [QueryProperty(nameof(Usuario), "usuario")]
     public class pantallaWantedVM : INotifyPropertyChanged
     {
         #region Atributos
@@ -91,19 +91,6 @@ namespace LuigiWanted.VM
             duracionTemporizador = 10;
             tiempoRestante = duracionTemporizador;
             Inicializar();
-            ComenzarTemporizador();
-            PedirListado();
-        }
-
-        public pantallaWantedVM(clsPersonaje personaje)
-        {
-            this.personajeABuscar = personaje;
-            listadoUsuarios = new List<clsUsuario>();
-            tiempoInicializacion = DateTime.Now;
-            duracionTemporizador = 10;
-            tiempoRestante = duracionTemporizador;
-            Inicializar();
-            ComenzarTemporizador();
         }
         #endregion
 
@@ -124,7 +111,7 @@ namespace LuigiWanted.VM
                 await Task.Delay(1000);
             }
 
-            await _connection.InvokeAsync("EmpezarBusqueda");
+            await _connection.InvokeAsync("EmpezarBusqueda", personajeABuscar);
         }
 
 
@@ -133,6 +120,8 @@ namespace LuigiWanted.VM
             _connection = new HubConnectionBuilder()
                 .WithUrl("https://localhost:7120/gamehub")
                 .Build();
+
+            _connection.On<string>("BusquedaLista", CambiarBuscar);
 
             await StartConnection(); // Espera a que la conexión se complete
             ComenzarTemporizador(); // Ahora inicia el temporizador DESPUÉS de la conexión
@@ -144,25 +133,10 @@ namespace LuigiWanted.VM
             {
                 await _connection.StartAsync();
                 System.Diagnostics.Debug.WriteLine("Conexión exitosa. Estado: " + _connection.State);
-                await PedirListado();
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Error de conexión: {ex.Message}");
-            }
-        }
-
-        // En el cliente
-        private async Task PedirListado()
-        {
-            Console.WriteLine("🔄 Solicitando listado...");
-            try
-            {
-                await _connection.InvokeAsync("ObtenerPuntuaciones");
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"❌ Error al pedir listado: {ex.Message}");
             }
         }
 
@@ -183,7 +157,7 @@ namespace LuigiWanted.VM
                         { "usuario", usuario}
                     };
 
-                    await Shell.Current.GoToAsync("///Wanted", queryParams);
+                    await Shell.Current.GoToAsync("///Buscar", queryParams);
                 }
                 catch (Exception ex)
                 {

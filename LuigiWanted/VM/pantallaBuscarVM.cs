@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 namespace LuigiWanted.VM;
 
 [QueryProperty(nameof(ListadoPersonajes), "listadoPersonaje")]
+[QueryProperty(nameof(Usuario), "usuario")]
 public class pantallaBuscarVM
 {
     #region Atributos
@@ -46,6 +47,10 @@ public class pantallaBuscarVM
         }
     }
 
+    public clsUsuario Usuario
+    {
+        set { usuario = value; }
+    }
     public int TiempoRestante { get; }
 
     #endregion

@@ -27,13 +27,14 @@ public class GameHub : Hub
     {
         clsUsuario usuario = clsListadosUsuarioBL.addUserBL(nombre);
         listadoUsuarios.Add(usuario);
+        await Clients.Caller.SendAsync("Registrado", usuario);
         if (listadoUsuarios.Count>=1)
         {
             if (personajeABuscar == null)
             {
                 personajeABuscar = clsListadoPersonajeBL.ObtenerPersonajeAleatorio();
             }
-            WantedDTO wantedDto = new WantedDTO(personajeABuscar, listadoUsuarios, usuario);
+            WantedDTO wantedDto = new WantedDTO(personajeABuscar, listadoUsuarios);
             string jsonResponse = JsonConvert.SerializeObject(wantedDto);
 
             await Clients.All.SendAsync("JuegoListo", jsonResponse);
@@ -67,10 +68,10 @@ public class GameHub : Hub
         }
     }
 
-    public async Task EmpezarBusqueda()
+    public async Task EmpezarBusqueda(clsPersonaje personajeABuscar)
     {
         jugadoresListos++;
-        if (jugadoresListos >= listadoUsuarios.Count)
+        if (jugadoresListos >= 1) //listadoUsuarios.Count
         {
             clsPersonaje personaje;
             int index;
@@ -94,7 +95,7 @@ public class GameHub : Hub
             BuscarDTO buscarDto = new BuscarDTO(personajeABuscar.Nombre, listadoPersonajesBuscar);
             string jsonResponse = JsonConvert.SerializeObject(buscarDto);
 
-            await Clients.All.SendAsync("JuegoListo", jsonResponse);
+            await Clients.All.SendAsync("BusquedaLista", jsonResponse);
         }
     }
 }
