@@ -5,14 +5,54 @@
              Title="Buscar"
              xmlns:vm="clr-namespace:LuigiWanted.VM">
 
+    <!-- BindingContext definido para conectar la vista con su ViewModel -->
     <ContentPage.BindingContext>
-        <vm:pantallaBuscarVM></vm:pantallaBuscarVM>
+        <viewModels:pantallaBuscarVM/>
     </ContentPage.BindingContext>
 
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <!-- Diseño principal -->
+    <Grid RowDefinitions="Auto, *" Padding="20">
+
+        <!-- Encabezado -->
+        <Label Text="Selecciona un Personaje" 
+               FontSize="32" 
+               FontAttributes="Bold" 
+               HorizontalOptions="Center" 
+               TextColor="#4A90E2"
+               Margin="0,0,0,10" />
+
+        <!-- Rúbrica 5x5 de personajes -->
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding ListaPersonajes}" 
+                        SelectionMode="Single"
+                        SelectedItem="{Binding PersonajeSeleccionado}" 
+                        Margin="0,20,0,0">
+
+            <!-- Configuración del diseño en cuadrícula -->
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" 
+                                 Span="5" 
+                                 HorizontalItemSpacing="5" 
+                                 VerticalItemSpacing="5" />
+            </CollectionView.ItemsLayout>
+
+            <!-- Plantilla para cada personaje -->
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="5" 
+                           BackgroundColor="#ffffff" 
+                           BorderColor="#cccccc" 
+                           CornerRadius="5" 
+                           HasShadow="True">
+                        <Image Source="{Binding ImagenUrl}" 
+                               HeightRequest="100" 
+                               WidthRequest="100" 
+                               Aspect="AspectFill"/>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </Grid>
+
 </ContentPage>
