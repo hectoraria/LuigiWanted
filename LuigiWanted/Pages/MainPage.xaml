@@ -2,28 +2,108 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="LuigiWanted.Pages.MainPage"
-             xmlns:vm="clr-namespace:LuigiWanted.VM">
+             xmlns:vm="clr-namespace:LuigiWanted.VM"
+             BackgroundColor="#82C785">
 
     <ContentPage.BindingContext>
         <vm:pantallaRegisterVM></vm:pantallaRegisterVM>
     </ContentPage.BindingContext>
 
-    <ScrollView>
-        <VerticalStackLayout>
-            <Label 
-                Text="Nombre:"
-                VerticalOptions="Center" 
-                HorizontalOptions="Center"
-                FontSize="28"/>
-            <Entry Placeholder="Nombre"
-                   Text="{Binding Nombre }"></Entry>
+    <AbsoluteLayout>
 
-            <Button 
-                Text="Entrar Sala"
-                Command="{Binding Enviar}"
-                BackgroundColor="Purple"
-                TextColor="White" />
-        </VerticalStackLayout>
-    </ScrollView>
+        <!-- Fondo blanco con el formulario -->
+        <Frame BackgroundColor="White"
+               CornerRadius="20"
+               Padding="25"
+               WidthRequest="320"
+               HeightRequest="420"
+               HorizontalOptions="Center"
+               VerticalOptions="CenterAndExpand"
+               HasShadow="True"
+               AbsoluteLayout.LayoutBounds="0.5, 0.5, -1, -1"
+               AbsoluteLayout.LayoutFlags="PositionProportional">
+
+            <VerticalStackLayout Spacing="20">
+
+                <Label 
+                    Text="Life's Good"
+                    VerticalOptions="Center" 
+                    HorizontalOptions="Center"
+                    FontSize="26"
+                    TextColor="#000000"
+                    FontAttributes="Bold"/>
+
+                <Frame BackgroundColor="#F3F3F3"
+                       CornerRadius="10"
+                       Padding="0"
+                       Margin="0,5">
+                    <Entry Placeholder="Username"
+                           Text="{Binding Nombre}"
+                           Margin="15,0"
+                           HeightRequest="50"
+                           FontSize="16"/>
+                </Frame>
+
+                <Frame HasShadow="True"
+                       CornerRadius="10"
+                       Padding="0"
+                       Margin="0,10">
+                    <Button 
+                        Text="Log in"
+                        Command="{Binding Enviar}"
+                        BackgroundColor="#F16F6F"
+                        TextColor="White"
+                        CornerRadius="10"
+                        HeightRequest="50"
+                        FontSize="18"/>
+                </Frame>
+
+
+                
+
+            </VerticalStackLayout>
+        </Frame>
+
+        <!-- Imagen de Mario a la izquierda -->
+        <Image Source="mario.png"
+               WidthRequest="130"
+               HeightRequest="130"
+               TranslationX="-40"
+               TranslationY="30"
+               Rotation="-10"
+               AbsoluteLayout.LayoutBounds="0.15, 0.5, -1, -1"
+               AbsoluteLayout.LayoutFlags="PositionProportional"/>
+
+        <!-- Imagen de Luigi a la derecha -->
+        <Image Source="luigi.png"
+               WidthRequest="150"
+               HeightRequest="150"
+               TranslationX="40"
+               TranslationY="30"
+               Rotation="10"
+               AbsoluteLayout.LayoutBounds="0.85, 0.5, -1, -1"
+               AbsoluteLayout.LayoutFlags="PositionProportional"/>
+
+        <!-- Imagen de Toad arriba a la izquierda -->
+        <Image Source="shyguy.png"
+               WidthRequest="130"
+               HeightRequest="130"
+               TranslationX="-20"
+               TranslationY="-20"
+               Rotation="-15"
+               AbsoluteLayout.LayoutBounds="0.2, 0.2, -1, -1"
+               AbsoluteLayout.LayoutFlags="PositionProportional"/>
+
+        <!-- Imagen de Waluigi arriba a la derecha -->
+        <Image Source="waluigi.png"
+               WidthRequest="130"
+               HeightRequest="130"
+               TranslationX="20"
+               TranslationY="-20"
+               Rotation="15"
+               AbsoluteLayout.LayoutBounds="0.8, 0.2, -1, -1"
+               AbsoluteLayout.LayoutFlags="PositionProportional"/>
+
+    </AbsoluteLayout>
 
 </ContentPage>

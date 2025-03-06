@@ -7,7 +7,7 @@
 
     <!-- BindingContext definido para conectar la vista con su ViewModel -->
     <ContentPage.BindingContext>
-        <viewModels:pantallaBuscarVM/>
+        <vm:pantallaBuscarVM/>
     </ContentPage.BindingContext>
 
     <!-- Diseño principal -->
@@ -23,7 +23,7 @@
 
         <!-- Rúbrica 5x5 de personajes -->
         <CollectionView Grid.Row="1"
-                        ItemsSource="{Binding ListaPersonajes}" 
+                        ItemsSource="{Binding ListadoPersonajes}" 
                         SelectionMode="Single"
                         SelectedItem="{Binding PersonajeSeleccionado}" 
                         Margin="0,20,0,0">
@@ -44,7 +44,7 @@
                            BorderColor="#cccccc" 
                            CornerRadius="5" 
                            HasShadow="True">
-                        <Image Source="{Binding ImagenUrl}" 
+                        <Image Source="{Binding Foto}" 
                                HeightRequest="100" 
                                WidthRequest="100" 
                                Aspect="AspectFill"/>
