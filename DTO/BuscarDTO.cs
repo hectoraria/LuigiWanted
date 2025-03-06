@@ -5,12 +5,12 @@ namespace DTO;
 public class BuscarDTO
 {
     #region Propiedades
-    private readonly string personajeCorrecto;
+    private readonly clsPersonaje personajeCorrecto;
     private readonly List<clsPersonaje> listadoPersonajes;
     #endregion
 
     #region Atributos
-    public string PersonajeCorrecto
+    public clsPersonaje PersonajeCorrecto
     {
         get { return personajeCorrecto; }
     }
@@ -22,7 +22,7 @@ public class BuscarDTO
     #endregion
 
     #region Constructores
-    public BuscarDTO(string personajeCorrecto, List<clsPersonaje> listadoPersonajes)
+    public BuscarDTO(clsPersonaje personajeCorrecto, List<clsPersonaje> listadoPersonajes)
     {
         this.personajeCorrecto = personajeCorrecto;
         this.listadoPersonajes = listadoPersonajes;

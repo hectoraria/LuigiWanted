@@ -14,8 +14,7 @@ using Newtonsoft.Json;
 
 namespace LuigiWanted.VM
 {
-
-    [QueryProperty(nameof(PersonajeConListadoUsuario), "personajeConListadoUsuario")]
+    [QueryProperty(nameof(Wanted), "wantedDTO")]
     [QueryProperty(nameof(Usuario), "usuario")]
     public class pantallaWantedVM : INotifyPropertyChanged
     {
@@ -58,7 +57,7 @@ namespace LuigiWanted.VM
             set { listadoUsuarios = value; }
         }
 
-        public string PersonajeConListadoUsuario
+        public string Wanted
         {
             set
             {
@@ -88,7 +87,7 @@ namespace LuigiWanted.VM
         {
             listadoUsuarios = new List<clsUsuario>();
             tiempoInicializacion = DateTime.Now;
-            duracionTemporizador = 10;
+            duracionTemporizador = 3;
             tiempoRestante = duracionTemporizador;
             Inicializar();
         }
@@ -153,7 +152,7 @@ namespace LuigiWanted.VM
                 {
                     var queryParams = new Dictionary<string, object>
                     {
-                        { "personajeConListadoUsuario", buscarDTO },
+                        { "buscar", buscarDTO },
                         { "usuario", usuario}
                     };
 
