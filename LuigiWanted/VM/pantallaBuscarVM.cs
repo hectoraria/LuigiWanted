@@ -1,16 +1,20 @@
-﻿using ENT;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using DTO;
+using ENT;
 using Microsoft.AspNetCore.SignalR.Client;
+using Newtonsoft.Json;
 
 namespace LuigiWanted.VM;
 
-[QueryProperty(nameof(ListadoPersonajes), "listadoPersonaje")]
+[QueryProperty(nameof(Buscar), "buscar")]
 [QueryProperty(nameof(Usuario), "usuario")]
-public class pantallaBuscarVM
+public class pantallaBuscarVM: INotifyPropertyChanged
 {
     #region Atributos
-    private string personajeSeleccionado;
+    private clsPersonaje personajeSeleccionado;
     private clsUsuario usuario;
-    private readonly string personajeCorrecto;
+    private clsPersonaje personajeCorrecto;
     private List<clsPersonaje> listadoPersonajes;
     private HubConnection _connection;
     #endregion
@@ -22,28 +26,25 @@ public class pantallaBuscarVM
         get { return listadoPersonajes; }
     }
 
-    public string PersonajeSeleccionado
+    public clsPersonaje PersonajeSeleccionado
     {
         set
         {
             personajeSeleccionado = value;
 
             //Comprobacion de que la persona seleccionada es la correcta
-            if (personajeSeleccionado == personajeCorrecto)
+            if (personajeSeleccionado.Nombre.Equals(personajeCorrecto.Nombre))
             {
                 usuario.Score += 1;
-
-                //Notifico al hub que se ha descubierto al personaje
+                ActulizarPuntuacion();
                 PersonajeEncontrado();
             }
 
             else
             {
                 usuario.Score -= 1;
+                ActulizarPuntuacion();
             }
-
-            ActulizarPuntuacion();
-
         }
     }
 
@@ -51,7 +52,24 @@ public class pantallaBuscarVM
     {
         set { usuario = value; }
     }
-    public int TiempoRestante { get; }
+
+    public string Buscar
+    {
+        set
+        {
+            try
+            {
+                BuscarDTO personajeConListadoUsuario = JsonConvert.DeserializeObject<BuscarDTO>(value);
+                personajeCorrecto = personajeConListadoUsuario.PersonajeCorrecto;
+                listadoPersonajes = personajeConListadoUsuario.ListadoPersonajes;
+                NotifyPropertyChanged(nameof(ListadoPersonajes));
+            }
+            catch (JsonSerializationException ex)
+            {
+                Console.WriteLine($"Error de deserialización: {ex.Message}");
+            }
+        }
+    }
 
     #endregion
 
@@ -72,6 +90,8 @@ public class pantallaBuscarVM
         _connection = new HubConnectionBuilder()
             .WithUrl("https://localhost:7120/gamehub")
             .Build();
+
+        _connection.On<string>("PersonajeEncontrado", CambiarWanted);
 
         StartConnection();
     }
@@ -107,5 +127,39 @@ public class pantallaBuscarVM
         await _connection.InvokeCoreAsync("ActualizarPuntuacion", args: new[] { usuario });
     }
 
+    /// <summary>
+    /// Funcion para pasar a la siguiente pagina y mandar el personaje a buscar
+    /// </summary>
+    /// <param name="personaje">Personaje aleatorio de la lista de personajes</param>
+    /// <returns></returns>
+    private void CambiarWanted(string wantedDTO)
+    {
+        MainThread.BeginInvokeOnMainThread(async () =>
+        {
+            try
+            {
+                var queryParams = new Dictionary<string, object>
+                {
+                    { "personajeConListadoUsuario", wantedDTO },
+                    { "usuario", usuario },
+                };
+
+                await Shell.Current.GoToAsync("///Wanted", queryParams);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al cambiar de pantalla: {ex.Message}");
+            }
+        });
+    }
+    #endregion
+
+    #region Notify
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
     #endregion
 }

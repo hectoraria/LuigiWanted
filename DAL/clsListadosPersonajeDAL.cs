@@ -10,7 +10,6 @@ public class clsListadoPersonajeDAL
         new clsPersonaje("Luigi", "luigi.png"),
         new clsPersonaje("Mario", "mario.png"),
         new clsPersonaje("Shy Guy", "shyguy.png"),
-        new clsPersonaje("Toad", "toad.png"),
         new clsPersonaje("Waluigi", "waluigi.png"),
         new clsPersonaje("Wario", "wario.png"),
         new clsPersonaje("Yoshi", "yoshi.png")

@@ -94,7 +94,7 @@ namespace LuigiWanted.VM
         /// </summary>
         /// <param name="personaje">Personaje aleatorio de la lista de personajes</param>
         /// <returns></returns>
-        private void CambiarWanted(string personajeConListadoUsuario)
+        private void CambiarWanted(string wantedDTO)
         {
             MainThread.BeginInvokeOnMainThread(async () =>
             {
@@ -102,7 +102,7 @@ namespace LuigiWanted.VM
                 {
                     var queryParams = new Dictionary<string, object>
                     {
-                        { "personajeConListadoUsuario", personajeConListadoUsuario },
+                        { "wantedDTO", wantedDTO },
                         { "usuario", usuario },
                     };
 
