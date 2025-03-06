@@ -2,36 +2,30 @@
 
 namespace DTO;
 
-public class WantedDTO
+public class BuscarDTO
 {
     #region Propiedades
-
-    private clsPersonaje personaje;
-    private List<clsUsuario> usuarios;
-
+    private readonly string personajeCorrecto;
+    private readonly List<clsPersonaje> listadoPersonajes;
     #endregion
 
     #region Atributos
-
-    public clsPersonaje Personaje
+    public string PersonajeCorrecto
     {
-        get { return personaje; }
+        get { return personajeCorrecto; }
     }
 
-    public List<clsUsuario> Usuarios
+    public List<clsPersonaje> ListadoPersonajes
     {
-        get { return usuarios; }
+        get { return listadoPersonajes; }
     }
-
     #endregion
 
     #region Constructores
-
-    public WantedDTO(clsPersonaje personaje, List<clsUsuario> usuarios)
+    public BuscarDTO(string personajeCorrecto, List<clsPersonaje> listadoPersonajes)
     {
-        this.personaje = personaje;
-        this.usuarios = usuarios;
+        this.personajeCorrecto = personajeCorrecto;
+        this.listadoPersonajes = listadoPersonajes;
     }
-
     #endregion
 }

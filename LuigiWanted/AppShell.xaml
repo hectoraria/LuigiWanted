@@ -13,7 +13,5 @@
 
     <ShellContent Title="Wanted" Route="Wanted" ContentTemplate="{DataTemplate views:Wanted}"></ShellContent>
 
-    
-
     <ShellContent Title="Buscar" Route="Buscar" ContentTemplate="{DataTemplate views:Buscar}"></ShellContent>
 </Shell>

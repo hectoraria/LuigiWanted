@@ -2,7 +2,7 @@
 
 namespace DTO;
 
-public class BuscarDTO
+public class WantedDTO
 {
     #region Propiedades
 
@@ -22,12 +22,11 @@ public class BuscarDTO
     {
         get { return usuarios; }
     }
-
     #endregion
 
     #region Constructores
 
-    public BuscarDTO(clsPersonaje personaje, List<clsUsuario> usuarios)
+    public WantedDTO(clsPersonaje personaje, List<clsUsuario> usuarios)
     {
         this.personaje = personaje;
         this.usuarios = usuarios;

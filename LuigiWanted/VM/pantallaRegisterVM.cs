@@ -15,9 +15,9 @@ namespace LuigiWanted.VM
     {
 
         #region Atributos
-
         private String nombre;
         private bool modificarNombre;
+        private clsUsuario usuario;
         private HubConnection _connection;
         private DelegateCommand enviar;
 
@@ -27,7 +27,6 @@ namespace LuigiWanted.VM
 
         public String Nombre
         {
-            get { return nombre; }
             set
             {
                 nombre = value; 
@@ -69,6 +68,7 @@ namespace LuigiWanted.VM
                 .AddNewtonsoftJsonProtocol()
                 .Build();
 
+            _connection.On<clsUsuario>("Registrado", AsignarUsuario);
             _connection.On<string>("JuegoListo", CambiarWanted);
 
             StartConnection();
@@ -102,7 +102,8 @@ namespace LuigiWanted.VM
                 {
                     var queryParams = new Dictionary<string, object>
                     {
-                        { "personajeConListadoUsuario", personajeConListadoUsuario }
+                        { "personajeConListadoUsuario", personajeConListadoUsuario },
+                        { "usuario", usuario },
                     };
 
                     await Shell.Current.GoToAsync("///Wanted", queryParams);
@@ -112,6 +113,11 @@ namespace LuigiWanted.VM
                     Console.WriteLine($"Error al cambiar de pantalla: {ex.Message}");
                 }
             });
+        }
+
+        private void AsignarUsuario(clsUsuario usuario)
+        {
+            this.usuario = usuario;
         }
         #endregion
 

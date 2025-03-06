@@ -1,8 +1,9 @@
 ﻿using BL;
-using ENT;
 using DTO;
+using ENT;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
+using WantedDTO = DTO.WantedDTO;
 
 namespace LuigiWantedSignalR.Hubs;
 
@@ -26,14 +27,15 @@ public class GameHub : Hub
     {
         clsUsuario usuario = clsListadosUsuarioBL.addUserBL(nombre);
         listadoUsuarios.Add(usuario);
+        await Clients.Caller.SendAsync("Registrado", usuario);
         if (listadoUsuarios.Count>=1)
         {
             if (personajeABuscar == null)
             {
                 personajeABuscar = clsListadoPersonajeBL.ObtenerPersonajeAleatorio();
             }
-            PersonajeConListadoUsuario personajeConListadoUsuario = new PersonajeConListadoUsuario(personajeABuscar, listadoUsuarios);
-            string jsonResponse = JsonConvert.SerializeObject(personajeConListadoUsuario);
+            WantedDTO wantedDto = new WantedDTO(personajeABuscar, listadoUsuarios);
+            string jsonResponse = JsonConvert.SerializeObject(wantedDto);
 
             await Clients.All.SendAsync("JuegoListo", jsonResponse);
         }
@@ -66,10 +68,10 @@ public class GameHub : Hub
         }
     }
 
-    public async Task EmpezarBusqueda()
+    public async Task EmpezarBusqueda(clsPersonaje personajeABuscar)
     {
         jugadoresListos++;
-        if (jugadoresListos >= listadoUsuarios.Count)
+        if (jugadoresListos >= 1) //listadoUsuarios.Count
         {
             clsPersonaje personaje;
             int index;
@@ -87,9 +89,13 @@ public class GameHub : Hub
                 }
             }
             index = random.Next(listadoPersonajes.Count);
-            listadoPersonajes[index] = personajeABuscar;
+            listadoPersonajesBuscar[index] = personajeABuscar;
             jugadoresListos = 0;
-            await Clients.All.SendAsync("JuegoListo", listadoUsuarios.Count);
+
+            BuscarDTO buscarDto = new BuscarDTO(personajeABuscar.Nombre, listadoPersonajesBuscar);
+            string jsonResponse = JsonConvert.SerializeObject(buscarDto);
+
+            await Clients.All.SendAsync("BusquedaLista", jsonResponse);
         }
     }
 }
