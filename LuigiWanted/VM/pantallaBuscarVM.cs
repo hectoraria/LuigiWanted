@@ -91,7 +91,7 @@ public class pantallaBuscarVM: INotifyPropertyChanged
             .WithUrl("https://localhost:7120/gamehub")
             .Build();
 
-        _connection.On<string>("PersonajeEncontrado", CambiarWanted);
+        _connection.On<string>("EmpezarWanted", CambiarWanted);
 
         StartConnection();
     }
@@ -140,7 +140,7 @@ public class pantallaBuscarVM: INotifyPropertyChanged
             {
                 var queryParams = new Dictionary<string, object>
                 {
-                    { "personajeConListadoUsuario", wantedDTO },
+                    { "wantedDTO", wantedDTO },
                     { "usuario", usuario },
                 };
 
