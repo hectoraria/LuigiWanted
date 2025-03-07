@@ -68,6 +68,10 @@ namespace LuigiWanted.VM
                     listadoUsuarios = personajeConListadoUsuario.Usuarios;
                     NotifyPropertyChanged(nameof(PersonajeABuscar));
                     NotifyPropertyChanged(nameof(ListadoUsuarios));
+                    tiempoInicializacion = DateTime.Now;
+                    duracionTemporizador = 3;
+                    tiempoRestante = duracionTemporizador;
+                    ComenzarTemporizador();
                 }
                 catch (JsonSerializationException ex)
                 {
@@ -86,9 +90,6 @@ namespace LuigiWanted.VM
         public pantallaWantedVM()
         {
             listadoUsuarios = new List<clsUsuario>();
-            tiempoInicializacion = DateTime.Now;
-            duracionTemporizador = 3;
-            tiempoRestante = duracionTemporizador;
             Inicializar();
         }
         #endregion
@@ -123,7 +124,6 @@ namespace LuigiWanted.VM
             _connection.On<string>("BusquedaLista", CambiarBuscar);
 
             await StartConnection(); // Espera a que la conexión se complete
-            ComenzarTemporizador(); // Ahora inicia el temporizador DESPUÉS de la conexión
         }
 
         private async Task StartConnection()

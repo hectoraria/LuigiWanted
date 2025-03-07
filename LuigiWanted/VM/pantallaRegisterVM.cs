@@ -69,7 +69,6 @@ namespace LuigiWanted.VM
                 .Build();
 
             _connection.On<clsUsuario>("Registrado", AsignarUsuario);
-            _connection.On<string>("JuegoListo", CambiarWanted);
 
             StartConnection();
         }
@@ -118,6 +117,15 @@ namespace LuigiWanted.VM
         private void AsignarUsuario(clsUsuario usuario)
         {
             this.usuario = usuario;
+            _connection.On("ComprobarConexion", VerificarConexion);
+            _connection.On<string>("JuegoListo", CambiarWanted);
+            _connection.On<string>("EmpezarWanted", CambiarWanted);
+            _connection.Remove("Registrado");
+        }
+
+        private async void VerificarConexion()
+        {
+            await _connection.InvokeCoreAsync("SigueConectado", args: new[] { usuario });
         }
         #endregion
 
@@ -142,7 +150,6 @@ namespace LuigiWanted.VM
 
             NotifyPropertyChanged(nameof(ModificarNombre));
         }
-
         #endregion
 
         #region Notify

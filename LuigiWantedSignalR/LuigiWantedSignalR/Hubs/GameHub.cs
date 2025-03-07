@@ -19,6 +19,7 @@ public class GameHub : Hub
 
     public async Task Registrarse(string nombre)
     {
+        await ComprobarUsuariosConectados();
         clsUsuario usuario = clsListadosUsuarioBL.addUserBL(nombre);
         if (!listadoUsuarios.Contains(usuario))
         {
@@ -38,8 +39,6 @@ public class GameHub : Hub
             WantedDTO wantedDto = new WantedDTO(personajeABuscar, listadoUsuarios);
             string jsonResponse = JsonConvert.SerializeObject(wantedDto);
 
-            listadoUsuarios = new List<clsUsuario>();
-
             await Clients.All.SendAsync("JuegoListo", jsonResponse);
             juegoListoEnviado = true;
 
@@ -48,6 +47,7 @@ public class GameHub : Hub
 
     public async Task PersonajeEncontrado()
     {
+        await ComprobarUsuariosConectados();
         personajeABuscar = clsListadoPersonajeBL.ObtenerPersonajeAleatorio();
         WantedDTO wantedDto = new WantedDTO(personajeABuscar, listadoUsuarios);
         string jsonResponse = JsonConvert.SerializeObject(wantedDto);
@@ -67,8 +67,11 @@ public class GameHub : Hub
 
     public async Task EmpezarBusqueda(clsPersonaje personajeABuscar)
     {
-        listadoUsuariosListos.Add(true);
-        if (listadoUsuariosListos.Count >= listadoUsuarios.Count)
+        lock (listadoUsuariosListos)
+        {
+            listadoUsuariosListos.Add(true);
+        }
+        if (listadoUsuariosListos.Count >= listadoUsuarios.Distinct().ToList().Count)
         {
             clsPersonaje personaje;
             int index;
@@ -90,7 +93,6 @@ public class GameHub : Hub
             jugadoresListos = 0;
 
             listadoUsuariosListos = new List<bool>();
-            listadoUsuarios = new List<clsUsuario>();
 
             BuscarDTO buscarDto = new BuscarDTO(personajeABuscar, listadoPersonajesBuscar);
             string jsonResponse = JsonConvert.SerializeObject(buscarDto);
@@ -101,18 +103,13 @@ public class GameHub : Hub
 
     public async Task SigueConectado(clsUsuario usuario)
     {
-        if (!listadoUsuarios.Contains(usuario) && usuario != null)
-        {
-            listadoUsuarios.Add(usuario);
-        }
+        listadoUsuarios.Add(usuario);
     }
 
-    public async Task DesconectarUsuario(int idUsuario)
+    public async Task ComprobarUsuariosConectados()
     {
-        clsUsuario usuario = listadoUsuarios.Find(u => u.Id == idUsuario);
-        if (usuario != null)
-        {
-            listadoUsuarios.Remove(usuario);
-        }
+        listadoUsuarios = new List<clsUsuario>();
+        await Clients.All.SendAsync("ComprobarConexion");
+        Thread.Sleep(500);
     }
 }
