@@ -10,25 +10,26 @@ namespace LuigiWantedSignalR.Hubs;
 public class GameHub : Hub
 {
     private static List<clsUsuario> listadoUsuarios = new List<clsUsuario>();
+    private static List<bool> listadoUsuariosListos = new List<bool>();
     private int jugadoresListos = 0;
     private clsPersonaje personajeABuscar;
     private List<clsPersonaje> listadoPersonajes = clsListadoPersonajeBL.GetListaPersonajesBL();
     private List<clsPersonaje> listadoPersonajesBuscar = new List<clsPersonaje>();
-
-    public async Task Unirse(string nombre)
-    {
-        // Lógica para unirse al juego
-        clsUsuario nuevoUsuario = new clsUsuario(nombre);
-        listadoUsuarios.Add(nuevoUsuario);
-        await Clients.All.SendAsync("UsuarioUnido", nuevoUsuario);
-    }
+    private static bool juegoListoEnviado;
 
     public async Task Registrarse(string nombre)
     {
         clsUsuario usuario = clsListadosUsuarioBL.addUserBL(nombre);
-        listadoUsuarios.Add(usuario);
+        if (!listadoUsuarios.Contains(usuario))
+        {
+            listadoUsuarios.Add(usuario);
+        }
         await Clients.Caller.SendAsync("Registrado", usuario);
-        if (listadoUsuarios.Count>=1)
+        if (listadoUsuarios.Count < 2)
+        {
+            juegoListoEnviado = false;
+        }
+        if (listadoUsuarios.Count >= 2 && !juegoListoEnviado)
         {
             if (personajeABuscar == null)
             {
@@ -37,7 +38,11 @@ public class GameHub : Hub
             WantedDTO wantedDto = new WantedDTO(personajeABuscar, listadoUsuarios);
             string jsonResponse = JsonConvert.SerializeObject(wantedDto);
 
+            listadoUsuarios = new List<clsUsuario>();
+
             await Clients.All.SendAsync("JuegoListo", jsonResponse);
+            juegoListoEnviado = true;
+
         }
     }
 
@@ -50,14 +55,8 @@ public class GameHub : Hub
         await Clients.All.SendAsync("EmpezarWanted", jsonResponse);
     }
 
-    public async Task ObtenerPuntuaciones()
-    {
-        await Clients.All.SendAsync("ListadoDeUsuarios", listadoUsuarios);
-    }
-
     public async Task ActualizarPuntuacion(clsUsuario usuario)
     {
-        // Find the user by ID
         clsUsuario usuarioConPuntuacionAntigua = listadoUsuarios.FirstOrDefault(u => u.Id == usuario.Id);
 
         if (usuarioConPuntuacionAntigua != null)
@@ -68,8 +67,8 @@ public class GameHub : Hub
 
     public async Task EmpezarBusqueda(clsPersonaje personajeABuscar)
     {
-        jugadoresListos++;
-        if (jugadoresListos >= 1) //listadoUsuarios.Count
+        listadoUsuariosListos.Add(true);
+        if (listadoUsuariosListos.Count >= listadoUsuarios.Count)
         {
             clsPersonaje personaje;
             int index;
@@ -90,10 +89,30 @@ public class GameHub : Hub
             listadoPersonajesBuscar[index] = personajeABuscar;
             jugadoresListos = 0;
 
+            listadoUsuariosListos = new List<bool>();
+            listadoUsuarios = new List<clsUsuario>();
+
             BuscarDTO buscarDto = new BuscarDTO(personajeABuscar, listadoPersonajesBuscar);
             string jsonResponse = JsonConvert.SerializeObject(buscarDto);
 
             await Clients.All.SendAsync("BusquedaLista", jsonResponse);
+        }
+    }
+
+    public async Task SigueConectado(clsUsuario usuario)
+    {
+        if (!listadoUsuarios.Contains(usuario) && usuario != null)
+        {
+            listadoUsuarios.Add(usuario);
+        }
+    }
+
+    public async Task DesconectarUsuario(int idUsuario)
+    {
+        clsUsuario usuario = listadoUsuarios.Find(u => u.Id == idUsuario);
+        if (usuario != null)
+        {
+            listadoUsuarios.Remove(usuario);
         }
     }
 }
