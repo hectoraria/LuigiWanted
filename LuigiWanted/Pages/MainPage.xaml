@@ -41,7 +41,8 @@
                            Text="{Binding Nombre}"
                            Margin="15,0"
                            HeightRequest="50"
-                           FontSize="16"/>
+                           FontSize="16"
+                           TextColor="#000000"/>
                 </Frame>
 
                 <Frame HasShadow="True"
