@@ -73,37 +73,45 @@ public class GameHub : Hub
         {
             listadoUsuariosListos.Add(true);
         }
+
         if (listadoUsuariosListos.Count >= listadoUsuarios.Distinct().ToList().Count && idUsuario == listadoUsuarios[0].Id)
         {
             clsPersonaje personaje;
-            int index;
             Random random = new Random();
+            List<clsPersonaje> listadoPersonajesBuscar = new List<clsPersonaje>();
+
+            // Llenar la matriz 5x5 con personajes aleatorios distintos al que buscamos
             for (int i = 0; i < 5; i++)
             {
                 for (int j = 0; j < 5; j++)
                 {
                     do
                     {
-                        index = random.Next(listadoPersonajes.Count);
-                        personaje = listadoPersonajes[index];
+                        personaje = listadoPersonajes[random.Next(listadoPersonajes.Count)];
                     } while (personaje.Nombre.Equals(personajeABuscar.Nombre));
+
                     listadoPersonajesBuscar.Add(personaje);
                 }
             }
-            index = random.Next(listadoPersonajes.Count);
-            listadoPersonajesBuscar[index] = personajeABuscar;
-            jugadoresListos = 0;
 
+            // Escoger una posición aleatoria dentro del tablero (0-24)
+            int filaAleatoria = random.Next(5); // Fila entre 0 y 4
+            int columnaAleatoria = random.Next(5); // Columna entre 0 y 4
+            int index = (filaAleatoria * 5) + columnaAleatoria; // Convertir coordenadas (fila, columna) a índice lineal
+
+            // Colocar el personaje a buscar en esa posición
+            listadoPersonajesBuscar[index] = personajeABuscar;
+
+            jugadoresListos = 0;
             listadoUsuariosListos = new List<bool>();
 
             BuscarDTO buscarDto = new BuscarDTO(personajeABuscar, listadoPersonajesBuscar);
             string jsonResponse = JsonConvert.SerializeObject(buscarDto);
 
-            listadoPersonajesBuscar = new List<clsPersonaje>();
-
             await Clients.All.SendAsync("BusquedaLista", jsonResponse);
         }
     }
+
 
     public async Task SigueConectado(clsUsuario usuario)
     {
