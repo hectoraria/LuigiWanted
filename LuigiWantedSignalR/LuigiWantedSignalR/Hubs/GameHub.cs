@@ -16,6 +16,7 @@ public class GameHub : Hub
     private List<clsPersonaje> listadoPersonajes = clsListadoPersonajeBL.GetListaPersonajesBL();
     private List<clsPersonaje> listadoPersonajesBuscar = new List<clsPersonaje>();
     private static bool juegoListoEnviado;
+    private static bool listaPersonajesGenerado = false;
 
     public async Task Registrarse(string nombre)
     {
@@ -39,6 +40,7 @@ public class GameHub : Hub
             WantedDTO wantedDto = new WantedDTO(personajeABuscar, listadoUsuarios);
             string jsonResponse = JsonConvert.SerializeObject(wantedDto);
 
+            Thread.Sleep(300);
             await Clients.All.SendAsync("JuegoListo", jsonResponse);
             juegoListoEnviado = true;
 
@@ -65,13 +67,13 @@ public class GameHub : Hub
         }
     }
 
-    public async Task EmpezarBusqueda(clsPersonaje personajeABuscar)
+    public async Task EmpezarBusqueda(clsPersonaje personajeABuscar, int idUsuario)
     {
         lock (listadoUsuariosListos)
         {
             listadoUsuariosListos.Add(true);
         }
-        if (listadoUsuariosListos.Count >= listadoUsuarios.Distinct().ToList().Count)
+        if (listadoUsuariosListos.Count >= listadoUsuarios.Distinct().ToList().Count && idUsuario == listadoUsuarios[0].Id)
         {
             clsPersonaje personaje;
             int index;
@@ -97,6 +99,8 @@ public class GameHub : Hub
             BuscarDTO buscarDto = new BuscarDTO(personajeABuscar, listadoPersonajesBuscar);
             string jsonResponse = JsonConvert.SerializeObject(buscarDto);
 
+            listadoPersonajesBuscar = new List<clsPersonaje>();
+
             await Clients.All.SendAsync("BusquedaLista", jsonResponse);
         }
     }
@@ -110,6 +114,6 @@ public class GameHub : Hub
     {
         listadoUsuarios = new List<clsUsuario>();
         await Clients.All.SendAsync("ComprobarConexion");
-        Thread.Sleep(500);
+        Thread.Sleep(1000);
     }
 }

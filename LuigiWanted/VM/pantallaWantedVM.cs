@@ -69,7 +69,7 @@ namespace LuigiWanted.VM
                     NotifyPropertyChanged(nameof(PersonajeABuscar));
                     NotifyPropertyChanged(nameof(ListadoUsuarios));
                     tiempoInicializacion = DateTime.Now;
-                    duracionTemporizador = 3;
+                    duracionTemporizador = 5;
                     tiempoRestante = duracionTemporizador;
                     ComenzarTemporizador();
                 }
@@ -111,7 +111,7 @@ namespace LuigiWanted.VM
                 await Task.Delay(1000);
             }
 
-            await _connection.InvokeAsync("EmpezarBusqueda", personajeABuscar);
+            await _connection.InvokeAsync("EmpezarBusqueda", personajeABuscar, usuario.Id);
         }
 
 
