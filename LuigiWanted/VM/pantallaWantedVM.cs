@@ -9,7 +9,6 @@ using BL;
 using DTO;
 using ENT;
 using Microsoft.AspNetCore.SignalR.Client;
-using Newtonsoft.Json;
 
 namespace LuigiWanted.VM
 {
@@ -34,7 +33,7 @@ namespace LuigiWanted.VM
         // Lista de usuarios conectados
         private List<clsUsuario> listadoUsuarios;
         // Maneja la conexión con el servidor 
-        private HubConnection _connection;  
+        private HubConnection _connection;
         #endregion
 
         #region Propiedades
@@ -68,33 +67,25 @@ namespace LuigiWanted.VM
         }
 
         // Propiedad para asignar el personaje a buscar y la lista de usuarios desde JSON
-        public string Wanted
+        public WantedDTO Wanted
         {
             set
             {
-                try
-                {
-                    // Deserializa el JSON recibido a un objeto WantedDTO
-                    WantedDTO personajeConListadoUsuario = JsonConvert.DeserializeObject<WantedDTO>(value);
-                    personajeABuscar = personajeConListadoUsuario.Personaje;  
-                    listadoUsuarios = personajeConListadoUsuario.Usuarios;  
+                // Deserializa el JSON recibido a un objeto WantedDTO
+                personajeABuscar = value.Personaje;
+                listadoUsuarios = value.Usuarios;
 
-                    // Notifica cambios 
-                    NotifyPropertyChanged(nameof(PersonajeABuscar));
-                    NotifyPropertyChanged(nameof(ListadoUsuarios));
+                // Notifica cambios 
+                NotifyPropertyChanged(nameof(PersonajeABuscar));
+                NotifyPropertyChanged(nameof(ListadoUsuarios));
 
-                    // Configura el temporizador
-                    tiempoInicializacion = DateTime.Now;
-                    duracionTemporizador = 5;
-                    tiempoRestante = duracionTemporizador;
+                // Configura el temporizador
+                tiempoInicializacion = DateTime.Now;
+                duracionTemporizador = 5;
+                tiempoRestante = duracionTemporizador;
 
-                    // Inicia el temporizador
-                    ComenzarTemporizador();
-                }
-                catch (JsonSerializationException ex)
-                {
-                    Console.WriteLine($"Error de deserialización: {ex.Message}");  
-                }
+                // Inicia el temporizador
+                ComenzarTemporizador();
             }
         }
 
@@ -109,8 +100,8 @@ namespace LuigiWanted.VM
         // Constructor que inicializa la lista de usuarios y establece la conexión
         public pantallaWantedVM()
         {
-            listadoUsuarios = new List<clsUsuario>();  
-            Inicializar();  
+            listadoUsuarios = new List<clsUsuario>();
+            Inicializar();
         }
         #endregion
 
@@ -119,17 +110,17 @@ namespace LuigiWanted.VM
         // Método asíncrono para iniciar el temporizador
         private async void ComenzarTemporizador()
         {
-            
+
             while (tiempoRestante > 0)
             {
                 // Calcula el tiempo transcurrido y actualiza el tiempo restante
                 var elapsedTime = (DateTime.Now - tiempoInicializacion).TotalSeconds;
                 tiempoRestante = (int)(duracionTemporizador - elapsedTime);
 
-                
+
                 NotifyPropertyChanged(nameof(TiempoRestante));
 
-                await Task.Delay(1000);  
+                await Task.Delay(1000);
             }
 
             await _connection.InvokeAsync("EmpezarBusqueda", personajeABuscar, usuario.Id);
@@ -138,15 +129,15 @@ namespace LuigiWanted.VM
         // Método asíncrono para configurar la conexión con SignalR
         private async void Inicializar()
         {
-            
+
             _connection = new HubConnectionBuilder()
-                .WithUrl("https://localhost:7120/gamehub")  
+                .WithUrl("https://localhost:7120/gamehub")
                 .Build();
 
             // Escucha el evento "BusquedaLista" 
-            _connection.On<string>("BusquedaLista", CambiarBuscar);
+            _connection.On<BuscarDTO>("BusquedaLista", CambiarBuscar);
 
-            await StartConnection();  
+            await StartConnection();
         }
 
         // Método asíncrono para iniciar la conexión a SignalR
@@ -154,17 +145,17 @@ namespace LuigiWanted.VM
         {
             try
             {
-                await _connection.StartAsync();  
+                await _connection.StartAsync();
                 System.Diagnostics.Debug.WriteLine("Conexión exitosa. Estado: " + _connection.State);
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Error de conexión: {ex.Message}");  
+                System.Diagnostics.Debug.WriteLine($"Error de conexión: {ex.Message}");
             }
         }
 
         // Método para cambiar de pantalla cuando se recibe el evento "BusquedaLista"
-        private void CambiarBuscar(string buscarDTO)
+        private void CambiarBuscar(BuscarDTO buscarDTO)
         {
             // Ejecuta en el hilo principal para evitar conflictos con la UI
             MainThread.BeginInvokeOnMainThread(async () =>
@@ -183,14 +174,14 @@ namespace LuigiWanted.VM
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error al cambiar de pantalla: {ex.Message}");  
+                    Console.WriteLine($"Error al cambiar de pantalla: {ex.Message}");
                 }
             });
         }
         #endregion
 
         #region Notify
-        
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         // Método para invocar el evento PropertyChanged y actualizar la UI

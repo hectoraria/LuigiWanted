@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace ENT;
+﻿namespace ENT;
 
 public class clsUsuario
 {
@@ -21,7 +19,6 @@ public class clsUsuario
     /// </summary>
     /// <param name="id">El ID único del usuario.</param>
     /// <param name="nombre">El nombre del usuario.</param>
-    [JsonConstructor]
     public clsUsuario(int id, string nombre)
     {
         this.Id = id;  

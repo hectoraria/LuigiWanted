@@ -3,7 +3,6 @@ using BL;
 using DTO;
 using ENT;
 using Microsoft.AspNetCore.SignalR;
-using Newtonsoft.Json;
 using WantedDTO = DTO.WantedDTO;
 
 namespace LuigiWantedSignalR.Hubs;
@@ -39,10 +38,9 @@ public class GameHub : Hub
                 personajeABuscar = clsListadoPersonajeBL.ObtenerPersonajeAleatorio();
             }
             WantedDTO wantedDto = new WantedDTO(personajeABuscar, listadoUsuarios);
-            string jsonResponse = JsonConvert.SerializeObject(wantedDto);
 
             Thread.Sleep(300);
-            await Clients.All.SendAsync("JuegoListo", jsonResponse);
+            await Clients.All.SendAsync("JuegoListo", wantedDto);
             juegoListoEnviado = true;
 
         }
@@ -53,9 +51,8 @@ public class GameHub : Hub
         await ComprobarUsuariosConectados();
         personajeABuscar = clsListadoPersonajeBL.ObtenerPersonajeAleatorio();
         WantedDTO wantedDto = new WantedDTO(personajeABuscar, listadoUsuarios);
-        string jsonResponse = JsonConvert.SerializeObject(wantedDto);
 
-        await Clients.All.SendAsync("EmpezarWanted", jsonResponse);
+        await Clients.All.SendAsync("EmpezarWanted", wantedDto);
     }
 
     public async Task ActualizarPuntuacion(clsUsuario usuario)
@@ -107,9 +104,8 @@ public class GameHub : Hub
             listadoUsuariosListos = new List<bool>();
 
             BuscarDTO buscarDto = new BuscarDTO(personajeABuscar, listadoPersonajesBuscar);
-            string jsonResponse = JsonConvert.SerializeObject(buscarDto);
 
-            await Clients.All.SendAsync("BusquedaLista", jsonResponse);
+            await Clients.All.SendAsync("BusquedaLista", buscarDto);
         }
     }
 

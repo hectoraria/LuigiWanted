@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using ConexionBDTMAUI.VM.Utils;
+using DTO;
 using ENT;
 using Microsoft.AspNetCore.SignalR.Client;
 
@@ -90,7 +91,6 @@ namespace LuigiWanted.VM
         {
             _connection = new HubConnectionBuilder()
                 .WithUrl("https://localhost:7120/gamehub")
-                .AddNewtonsoftJsonProtocol()
                 .Build();
 
             // Suscribe al evento "Registrado" para asignar el usuario
@@ -118,7 +118,7 @@ namespace LuigiWanted.VM
         /// <summary>
         /// Cambia de pantalla y envía los datos necesarios
         /// </summary>
-        private void CambiarWanted(string wantedDTO)
+        private void CambiarWanted(WantedDTO wantedDTO)
         {
             MainThread.BeginInvokeOnMainThread(async () =>
             {
@@ -149,9 +149,9 @@ namespace LuigiWanted.VM
             // Suscribe al evento "ComprobarConexion" para comprobar la conexion
             _connection.On("ComprobarConexion", VerificarConexion);
             // Suscribe al evento "JuegoListo" para pasar a la pagina wanted 
-            _connection.On<string>("JuegoListo", CambiarWanted);
+            _connection.On<WantedDTO>("JuegoListo", CambiarWanted);
             // Suscribe al evento "EmpezarWanted" para empezar wanted 
-            _connection.On<string>("EmpezarWanted", CambiarWanted);
+            _connection.On<WantedDTO>("EmpezarWanted", CambiarWanted);
             _connection.Remove("Registrado");  
         }
 
