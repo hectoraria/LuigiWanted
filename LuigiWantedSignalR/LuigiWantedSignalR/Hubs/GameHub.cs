@@ -1,4 +1,5 @@
-﻿using BL;
+﻿using System.Collections.ObjectModel;
+using BL;
 using DTO;
 using ENT;
 using Microsoft.AspNetCore.SignalR;
@@ -14,7 +15,7 @@ public class GameHub : Hub
     private int jugadoresListos = 0;
     private clsPersonaje personajeABuscar;
     private List<clsPersonaje> listadoPersonajes = clsListadoPersonajeBL.GetListaPersonajesBL();
-    private List<clsPersonaje> listadoPersonajesBuscar = new List<clsPersonaje>();
+    private ObservableCollection<clsPersonaje> listadoPersonajesBuscar = new ObservableCollection<clsPersonaje>();
     private static bool juegoListoEnviado;
     private static bool listaPersonajesGenerado = false;
 
@@ -78,7 +79,7 @@ public class GameHub : Hub
         {
             clsPersonaje personaje;
             Random random = new Random();
-            List<clsPersonaje> listadoPersonajesBuscar = new List<clsPersonaje>();
+            listadoPersonajesBuscar = new ObservableCollection<clsPersonaje>();
 
             // Llenar la matriz 5x5 con personajes aleatorios distintos al que buscamos
             for (int i = 0; i < 5; i++)

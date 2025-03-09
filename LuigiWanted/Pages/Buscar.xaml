@@ -45,6 +45,7 @@
                            CornerRadius="5" 
                            HasShadow="True">
                         <Image Source="{Binding Foto}" 
+                               IsVisible="{Binding Visible}"
                                HeightRequest="100" 
                                WidthRequest="100" 
                                Aspect="AspectFill"/>

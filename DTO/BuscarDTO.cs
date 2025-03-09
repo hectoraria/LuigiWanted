@@ -1,4 +1,5 @@
-﻿using ENT;
+﻿using System.Collections.ObjectModel;
+using ENT;
 
 namespace DTO;
 
@@ -7,7 +8,7 @@ public class BuscarDTO
     #region Propiedades
     
     private readonly clsPersonaje personajeCorrecto;
-    private readonly List<clsPersonaje> listadoPersonajes;
+    private readonly ObservableCollection<clsPersonaje> listadoPersonajes;
     #endregion
 
     #region Atributos
@@ -23,7 +24,7 @@ public class BuscarDTO
     /// <summary>
     /// Propiedad que devuelve la lista de personajes disponibles.
     /// </summary>
-    public List<clsPersonaje> ListadoPersonajes
+    public ObservableCollection<clsPersonaje> ListadoPersonajes
     {
         get { return listadoPersonajes; }  
     }
@@ -37,7 +38,7 @@ public class BuscarDTO
     /// </summary>
     /// <param name="personajeCorrecto">El personaje que debe ser encontrado.</param>
     /// <param name="listadoPersonajes">Lista de personajes disponibles para elegir.</param>
-    public BuscarDTO(clsPersonaje personajeCorrecto, List<clsPersonaje> listadoPersonajes)
+    public BuscarDTO(clsPersonaje personajeCorrecto, ObservableCollection<clsPersonaje> listadoPersonajes)
     {
         this.personajeCorrecto = personajeCorrecto;  
         this.listadoPersonajes = listadoPersonajes;  
