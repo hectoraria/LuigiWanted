@@ -63,6 +63,7 @@
 	<ItemGroup>
 	  <None Remove="Resources\Images\icon.png" />
 	  <None Remove="Resources\Images\kingboo.png" />
+	  <None Remove="Resources\Images\mario.png" />
 	  <None Remove="Resources\Images\seldeghammer.png" />
 	</ItemGroup>
 
