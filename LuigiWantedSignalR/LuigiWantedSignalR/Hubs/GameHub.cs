@@ -1,9 +1,10 @@
 ﻿using System.Collections.ObjectModel;
+using System.Text.Json;
 using BL;
 using DTO;
 using ENT;
 using Microsoft.AspNetCore.SignalR;
-using Newtonsoft.Json;
+
 using WantedDTO = DTO.WantedDTO;
 
 namespace LuigiWantedSignalR.Hubs;
@@ -39,12 +40,11 @@ public class GameHub : Hub
                 personajeABuscar = clsListadoPersonajeBL.ObtenerPersonajeAleatorio();
             }
             WantedDTO wantedDto = new WantedDTO(personajeABuscar, listadoUsuarios);
-            string jsonResponse = JsonConvert.SerializeObject(wantedDto);
+            string jsonResponse = JsonSerializer.Serialize(wantedDto);
 
             Thread.Sleep(300);
             await Clients.All.SendAsync("JuegoListo", jsonResponse);
             juegoListoEnviado = true;
-
         }
     }
 
@@ -53,7 +53,7 @@ public class GameHub : Hub
         await ComprobarUsuariosConectados();
         personajeABuscar = clsListadoPersonajeBL.ObtenerPersonajeAleatorio();
         WantedDTO wantedDto = new WantedDTO(personajeABuscar, listadoUsuarios);
-        string jsonResponse = JsonConvert.SerializeObject(wantedDto);
+        string jsonResponse = JsonSerializer.Serialize(wantedDto);
 
         await Clients.All.SendAsync("EmpezarWanted", jsonResponse);
     }
@@ -96,9 +96,9 @@ public class GameHub : Hub
             }
 
             // Escoger una posición aleatoria dentro del tablero (0-24)
-            int filaAleatoria = random.Next(5); // Fila entre 0 y 4
-            int columnaAleatoria = random.Next(5); // Columna entre 0 y 4
-            int index = (filaAleatoria * 5) + columnaAleatoria; // Convertir coordenadas (fila, columna) a índice lineal
+            int filaAleatoria = random.Next(5);
+            int columnaAleatoria = random.Next(5);
+            int index = (filaAleatoria * 5) + columnaAleatoria;
 
             // Colocar el personaje a buscar en esa posición
             listadoPersonajesBuscar[index] = personajeABuscar;
@@ -107,12 +107,11 @@ public class GameHub : Hub
             listadoUsuariosListos = new List<bool>();
 
             BuscarDTO buscarDto = new BuscarDTO(personajeABuscar, listadoPersonajesBuscar);
-            string jsonResponse = JsonConvert.SerializeObject(buscarDto);
+            string jsonResponse = JsonSerializer.Serialize(buscarDto);
 
             await Clients.All.SendAsync("BusquedaLista", jsonResponse);
         }
     }
-
 
     public async Task SigueConectado(clsUsuario usuario)
     {

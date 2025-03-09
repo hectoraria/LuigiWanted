@@ -1,10 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Text.Json;  // Cambiado a System.Text.Json
 using DTO;
 using ENT;
 using Microsoft.AspNetCore.SignalR.Client;
-using Newtonsoft.Json;
 
 namespace LuigiWanted.VM;
 
@@ -29,9 +30,6 @@ public class pantallaBuscarVM : INotifyPropertyChanged
     #endregion
 
     #region Propiedades
-
-
-    
     // Propiedad para acceder a la lista de personajes
     public ObservableCollection<clsPersonaje> ListadoPersonajes
     {
@@ -82,21 +80,19 @@ public class pantallaBuscarVM : INotifyPropertyChanged
                 if (listadoPersonajes.Count == 0)
                 {
                     // Deserializar los datos del personaje correcto y la lista de personajes
-                    BuscarDTO personajeConListadoUsuario = JsonConvert.DeserializeObject<BuscarDTO>(value);
+                    BuscarDTO personajeConListadoUsuario = JsonSerializer.Deserialize<BuscarDTO>(value);
                     personajeCorrecto = personajeConListadoUsuario.PersonajeCorrecto;
                     listadoPersonajes = personajeConListadoUsuario.ListadoPersonajes;
                     NotifyPropertyChanged(nameof(ListadoPersonajes));
                     puedeSeleccionar = true;
                 }
             }
-            catch (JsonSerializationException ex)
+            catch (JsonException ex)  // Cambiado a JsonException
             {
-                Console.WriteLine($"Error de deserialización: {ex.Message}");  
+                Console.WriteLine($"Error de deserialización: {ex.Message}");
             }
         }
     }
-
-    
     #endregion
 
     #region Constructores
@@ -109,15 +105,14 @@ public class pantallaBuscarVM : INotifyPropertyChanged
     #endregion
 
     #region Metodos
-
     /// <summary>
     /// Crea la conexión al Hub
     /// </summary>
     private void Inicializar()
     {
-        
+        // Establece la conexión con el servidor de SignalR
         _connection = new HubConnectionBuilder()
-            .WithUrl("https://localhost:7120/gamehub")  
+            .WithUrl("https://localhost:7120/gamehub")
             .Build();
 
         // Suscribirse al evento "EmpezarWanted" del Hub 
@@ -133,11 +128,11 @@ public class pantallaBuscarVM : INotifyPropertyChanged
     {
         try
         {
-            await _connection.StartAsync();  
+            await _connection.StartAsync();
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error al iniciar la conexión: {ex.Message}");  
+            Console.WriteLine($"Error al iniciar la conexión: {ex.Message}");
         }
     }
 
@@ -148,9 +143,6 @@ public class pantallaBuscarVM : INotifyPropertyChanged
     {
         // Llamar al método en el Hub para notificar a otros usuarios
         await _connection.InvokeAsync("PersonajeEncontrado");
-
-
-        
     }
 
     /// <summary>
@@ -158,10 +150,8 @@ public class pantallaBuscarVM : INotifyPropertyChanged
     /// </summary>
     private async void ActulizarPuntuacion()
     {
-
         // Llamar al método en el Hub para actualizar la puntuación
-        await _connection.InvokeCoreAsync("ActualizarPuntuacion", args: new[] { usuario });  
-
+        await _connection.InvokeCoreAsync("ActualizarPuntuacion", args: new[] { usuario });
     }
 
     /// <summary>
@@ -184,18 +174,17 @@ public class pantallaBuscarVM : INotifyPropertyChanged
                 };
 
                 // Navegar a la página "Wanted" con los parámetros
-                await Shell.Current.GoToAsync("///Wanted", queryParams);  
+                await Shell.Current.GoToAsync("///Wanted", queryParams);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al cambiar de pantalla: {ex.Message}");  
+                Console.WriteLine($"Error al cambiar de pantalla: {ex.Message}");
             }
         });
     }
     #endregion
 
     #region Notify
-    
     public event PropertyChangedEventHandler? PropertyChanged;
 
     // Método que dispara el evento de notificación de cambio de propiedad
