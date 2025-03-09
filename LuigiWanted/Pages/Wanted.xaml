@@ -45,19 +45,13 @@
         </Frame>
 
         <!-- Imagen del personaje a buscar -->
-        <Frame BackgroundColor="#FFFFFF"
-               CornerRadius="20"
-               Padding="20"
-               HasShadow="True"
+        <Image Source="{Binding PersonajeABuscar.Foto}" 
+               WidthRequest="180"
+               HeightRequest="180"
+               Aspect="AspectFit"
                HorizontalOptions="Center"
                Grid.Row="1"
-               Margin="0,20,0,20">
-            <Image Source="{Binding PersonajeABuscar.Foto}" 
-                   WidthRequest="180"
-                   HeightRequest="180"
-                   Aspect="AspectFit"
-                   HorizontalOptions="Center"/>
-        </Frame>
+               Margin="0,20,0,20"/>
 
         <!-- Listado de puntuaciones -->
         <Frame BackgroundColor="#FFFFFF"
