@@ -26,7 +26,7 @@
             <VerticalStackLayout Spacing="20">
 
                 <Label 
-                    Text="Life's Good"
+                    Text="Luigi Wanted"
                     VerticalOptions="Center" 
                     HorizontalOptions="Center"
                     FontSize="26"

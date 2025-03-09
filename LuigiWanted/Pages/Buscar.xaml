@@ -13,7 +13,9 @@
     <!-- Diseño principal -->
     <Grid RowDefinitions="Auto, *" Padding="20">
 
-        <!-- Encabezado -->
+        
+
+            <!-- Encabezado -->
         <Label Text="Selecciona un Personaje" 
                FontSize="32" 
                FontAttributes="Bold" 
