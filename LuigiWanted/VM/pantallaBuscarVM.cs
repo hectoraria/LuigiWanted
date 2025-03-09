@@ -57,6 +57,8 @@ public class pantallaBuscarVM : INotifyPropertyChanged
                 {
                     usuario.Score -= 1;  // Decrementar la puntuación si el personaje es incorrecto
                     ActulizarPuntuacion();
+                    Thread.Sleep(500);
+                    puedeSeleccionar = true;
                 }
             }
         }
@@ -159,11 +161,11 @@ public class pantallaBuscarVM : INotifyPropertyChanged
     /// <returns></returns>
     private void CambiarWanted(string wantedDTO)
     {
+        puedeSeleccionar = false;
         MainThread.BeginInvokeOnMainThread(async () =>
         {
             try
             {
-                Thread.Sleep(500);
                 listadoPersonajes = new ObservableCollection<clsPersonaje>();
                 var queryParams = new Dictionary<string, object>
                 {
