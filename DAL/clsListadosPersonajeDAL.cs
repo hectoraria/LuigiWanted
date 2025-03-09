@@ -12,7 +12,9 @@ public class clsListadoPersonajeDAL
         new clsPersonaje("Shy Guy", "shyguy.png"),
         new clsPersonaje("Waluigi", "waluigi.png"),
         new clsPersonaje("Wario", "wario.png"),
-        new clsPersonaje("Yoshi", "yoshi.png")
+        new clsPersonaje("Yoshi", "yoshi.png"),
+        new clsPersonaje("King Boo", "kingboo.png"),
+        new clsPersonaje("Seldeg Hammer", "seldeghammer.png")
     };
 
     /// <summary>

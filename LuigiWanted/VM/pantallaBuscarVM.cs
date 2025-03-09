@@ -22,11 +22,13 @@ public class pantallaBuscarVM : INotifyPropertyChanged
     // Lista de personajes disponibles
     private List<clsPersonaje> listadoPersonajes;
     // Maneja la conexión con el servidor 
-    private HubConnection _connection; 
+    private HubConnection _connection;
     #endregion
 
     #region Propiedades
 
+
+    
     // Propiedad para acceder a la lista de personajes
     public List<clsPersonaje> ListadoPersonajes
     {
@@ -82,6 +84,7 @@ public class pantallaBuscarVM : INotifyPropertyChanged
         }
     }
 
+    
     #endregion
 
     #region Constructores
@@ -130,7 +133,11 @@ public class pantallaBuscarVM : INotifyPropertyChanged
     /// </summary>
     private async void PersonajeEncontrado()
     {
-        await _connection.InvokeAsync("PersonajeEncontrado");  // Llamar al método en el Hub para notificar a otros usuarios
+        // Llamar al método en el Hub para notificar a otros usuarios
+        await _connection.InvokeAsync("PersonajeEncontrado");
+
+
+        
     }
 
     /// <summary>
@@ -138,7 +145,10 @@ public class pantallaBuscarVM : INotifyPropertyChanged
     /// </summary>
     private async void ActulizarPuntuacion()
     {
-        await _connection.InvokeCoreAsync("ActualizarPuntuacion", args: new[] { usuario });  // Llamar al método en el Hub para actualizar la puntuación
+
+        // Llamar al método en el Hub para actualizar la puntuación
+        await _connection.InvokeCoreAsync("ActualizarPuntuacion", args: new[] { usuario });  
+
     }
 
     /// <summary>
