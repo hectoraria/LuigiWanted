@@ -131,7 +131,7 @@ namespace LuigiWanted.VM
         {
 
             _connection = new HubConnectionBuilder()
-                .WithUrl("https://localhost:7120/gamehub")
+                .WithUrl("https://luigiwantedsignalr20250309205400-hwd4ekfmaaf2e5bj.spaincentral-01.azurewebsites.net/gamehub")
                 .Build();
 
             // Escucha el evento "BusquedaLista" 

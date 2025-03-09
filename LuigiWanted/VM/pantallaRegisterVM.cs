@@ -90,7 +90,7 @@ namespace LuigiWanted.VM
         private void Inicializar()
         {
             _connection = new HubConnectionBuilder()
-                .WithUrl("https://localhost:7120/gamehub")
+                .WithUrl("https://luigiwantedsignalr20250309205400-hwd4ekfmaaf2e5bj.spaincentral-01.azurewebsites.net/gamehub")
                 .Build();
 
             // Suscribe al evento "Registrado" para asignar el usuario
