@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using DTO;
 using ENT;
@@ -20,15 +21,17 @@ public class pantallaBuscarVM : INotifyPropertyChanged
     // Personaje correcto que el usuario debe encontrar
     private clsPersonaje personajeCorrecto;
     // Lista de personajes disponibles
-    private List<clsPersonaje> listadoPersonajes;
+    private ObservableCollection<clsPersonaje> listadoPersonajes;
     // Maneja la conexión con el servidor 
-    private HubConnection _connection; 
+    private HubConnection _connection;
+    // Variable para saber si se puede seleccionar un personaje
+    private bool puedeSeleccionar;
     #endregion
 
     #region Propiedades
 
     // Propiedad para acceder a la lista de personajes
-    public List<clsPersonaje> ListadoPersonajes
+    public ObservableCollection<clsPersonaje> ListadoPersonajes
     {
         get { return listadoPersonajes; }
     }
@@ -38,19 +41,23 @@ public class pantallaBuscarVM : INotifyPropertyChanged
     {
         set
         {
-            personajeSeleccionado = value;
+            if (puedeSeleccionar)
+            {
+                puedeSeleccionar = false;
+                personajeSeleccionado = value;
 
-            // Comprobación de si el personaje seleccionado es el correcto
-            if (personajeSeleccionado.Nombre.Equals(personajeCorrecto.Nombre))
-            {
-                usuario.Score += 1;  // Incrementar la puntuación si el personaje es correcto
-                ActulizarPuntuacion();
-                PersonajeEncontrado();
-            }
-            else
-            {
-                usuario.Score -= 1;  // Decrementar la puntuación si el personaje es incorrecto
-                ActulizarPuntuacion();
+                // Comprobación de si el personaje seleccionado es el correcto
+                if (personajeSeleccionado.Nombre.Equals(personajeCorrecto.Nombre))
+                {
+                    usuario.Score += 1;  // Incrementar la puntuación si el personaje es correcto
+                    ActulizarPuntuacion();
+                    PersonajeEncontrado();
+                }
+                else
+                {
+                    usuario.Score -= 1;  // Decrementar la puntuación si el personaje es incorrecto
+                    ActulizarPuntuacion();
+                }
             }
         }
     }
@@ -68,12 +75,15 @@ public class pantallaBuscarVM : INotifyPropertyChanged
         {
             try
             {
-
-                // Deserializar los datos del personaje correcto y la lista de personajes
-                BuscarDTO personajeConListadoUsuario = JsonConvert.DeserializeObject<BuscarDTO>(value);
-                personajeCorrecto = personajeConListadoUsuario.PersonajeCorrecto;
-                listadoPersonajes = personajeConListadoUsuario.ListadoPersonajes;
-                NotifyPropertyChanged(nameof(ListadoPersonajes));  
+                if (listadoPersonajes.Count == 0)
+                {
+                    // Deserializar los datos del personaje correcto y la lista de personajes
+                    BuscarDTO personajeConListadoUsuario = JsonConvert.DeserializeObject<BuscarDTO>(value);
+                    personajeCorrecto = personajeConListadoUsuario.PersonajeCorrecto;
+                    listadoPersonajes = personajeConListadoUsuario.ListadoPersonajes;
+                    NotifyPropertyChanged(nameof(ListadoPersonajes));
+                    puedeSeleccionar = true;
+                }
             }
             catch (JsonSerializationException ex)
             {
@@ -88,6 +98,7 @@ public class pantallaBuscarVM : INotifyPropertyChanged
     // Constructor que inicializa la conexión
     public pantallaBuscarVM()
     {
+        listadoPersonajes = new ObservableCollection<clsPersonaje>();
         Inicializar();
     }
     #endregion
@@ -152,7 +163,8 @@ public class pantallaBuscarVM : INotifyPropertyChanged
         {
             try
             {
-                
+                Thread.Sleep(500);
+                listadoPersonajes = new ObservableCollection<clsPersonaje>();
                 var queryParams = new Dictionary<string, object>
                 {
                     { "wantedDTO", wantedDTO },

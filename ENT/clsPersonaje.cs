@@ -1,4 +1,7 @@
-﻿namespace ENT;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
+namespace ENT;
 
 public class clsPersonaje
 {
@@ -6,6 +9,7 @@ public class clsPersonaje
 
     private string nombre;
     private string foto;
+    private bool visible;
 
     #endregion
 
@@ -24,9 +28,12 @@ public class clsPersonaje
     /// </summary>
     public string Foto
     {
-        get { return foto; }  
+        get { return foto; }
+        set
+        {
+            foto = ""; 
+        }
     }
-
     #endregion
 
     #region Constructores
@@ -39,8 +46,8 @@ public class clsPersonaje
     public clsPersonaje(string nombre, string foto)
     {
         this.nombre = nombre;  
-        this.foto = foto;  
+        this.foto = foto;
+        this.visible = true;
     }
-
     #endregion
 }

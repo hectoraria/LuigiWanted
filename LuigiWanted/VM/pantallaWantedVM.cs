@@ -167,7 +167,6 @@ namespace LuigiWanted.VM
         private void CambiarBuscar(string buscarDTO)
         {
             // Ejecuta en el hilo principal para evitar conflictos con la UI
-
             MainThread.BeginInvokeOnMainThread(async () =>
             {
                 try
